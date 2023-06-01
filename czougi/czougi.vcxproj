@@ -152,6 +152,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="czougi.cpp" />
     <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="textures.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="window.cpp" />
   </ItemGroup>
@@ -168,11 +169,26 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Settings.h" />
+    <ClInclude Include="textures.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Roboto-Regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\blue-eagle.png" />
+    <Image Include="images\blue-tank.png" />
+    <Image Include="images\brick-wall.png" />
+    <Image Include="images\concrete-wall.png" />
+    <Image Include="images\green-eagle.png" />
+    <Image Include="images\green-tank.png" />
+    <Image Include="images\leaves.png" />
+    <Image Include="images\red-eagle.png" />
+    <Image Include="images\red-tank.png" />
+    <Image Include="images\water.png" />
+    <Image Include="images\yellow-eagle.png" />
+    <Image Include="images\yellow-tank.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

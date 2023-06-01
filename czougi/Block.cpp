@@ -19,7 +19,7 @@ BrickWall::BrickWall()
 
 ConcreteWall::ConcreteWall()
 {
-	graphics.setFillColor(Color::White);
+	graphics.setFillColor(Color::Color(0x707070FF));
 }
 
 Water::Water()
