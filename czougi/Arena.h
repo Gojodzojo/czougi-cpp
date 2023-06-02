@@ -13,6 +13,7 @@ private:
 	sf::RectangleShape ingameStats;
 	sf::RectangleShape czoug1;
 	sf::Vector2f cz1Position;
+	sf::Clock clock;
 public:
 	Arena(Level);
 	Scene* processEvent(sf::RenderWindow& window, sf::Event& event);

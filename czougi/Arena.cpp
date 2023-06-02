@@ -19,11 +19,8 @@ cz1Position(0, 0)
 	ingameStats.setOutlineColor(Color::White);
 	ingameStats.setPosition(VIEW_WIDTH-INGAMESTATS_WIDTH, 0);
 	czoug1.setFillColor(Color::Green);
-	Vector2f cz1Position(0, 0);
+	Vector2f cz1Position(50, 50);
 	czoug1.setPosition(cz1Position);
-
-	float speed = 5.0f;
-	Vector2f velocity(0, 0);
 
 }
 
@@ -34,25 +31,53 @@ Scene* Arena::processEvent(sf::RenderWindow& window, sf::Event& event)
 
 Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 {
-	float speed = 5.0f;
-	Vector2f velocity(0, 0);
-	//Keybindings p1(W,A,S,D,E);
 
-	velocity.x = 0;
-	velocity.y = 0;
-
-
-	if (Keyboard::isKeyPressed(Keyboard::W))
-		velocity.y = -speed;
-	if (Keyboard::isKeyPressed(Keyboard::S))
-		velocity.y = speed;
-	if (Keyboard::isKeyPressed(Keyboard::A))
-		velocity.x = -speed;
-	if (Keyboard::isKeyPressed(Keyboard::D))
-		velocity.x = speed;
-	cz1Position += velocity;
-	czoug1.setPosition(cz1Position);
+	deltaTime = clock.getElapsedTime().asSeconds();
+	clock.restart();
+	float velocity = 300 * deltaTime;
+	Vector2f player1Pos = czoug1.getPosition();
 	
+	if (Keyboard::isKeyPressed(Keyboard::W))
+	{
+		player1Pos.y -= velocity;
+
+		if (player1Pos.y < 0)
+		{
+			player1Pos.y = 0;
+		}
+	}
+	if (Keyboard::isKeyPressed(Keyboard::A))
+	{
+		player1Pos.x -= velocity;
+
+		if (player1Pos.x < 0)
+		{
+			player1Pos.x = 0;
+		}
+	}
+
+	if (Keyboard::isKeyPressed(Keyboard::S))
+	{
+		player1Pos.y += velocity;
+
+		if (player1Pos.y + czoug1.getSize().y > VIEW_HEIGHT)
+		{
+			player1Pos.y = VIEW_HEIGHT - czoug1.getSize().y;
+		}
+	}
+
+	if (Keyboard::isKeyPressed(Keyboard::D))
+	{
+		player1Pos.x += velocity;
+
+		if (player1Pos.x + czoug1.getSize().x > VIEW_WIDTH - INGAMESTATS_WIDTH)
+		{
+			player1Pos.x = VIEW_WIDTH - INGAMESTATS_WIDTH - czoug1.getSize().x;
+		}
+	}
+	czoug1.setPosition(player1Pos);
+
+
 
 	return nullptr;
 }
