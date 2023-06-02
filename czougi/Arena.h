@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "font.h"
 #include "Level.h"
+#include "Window.h"
 
 class Arena :
 	public Scene
@@ -9,6 +10,7 @@ class Arena :
 private:
 	sf::Text title;
 	Level level;
+	sf::RectangleShape ingameStats;
 public:
 	Arena(Level);
 	Scene* processEvent(sf::RenderWindow& window, sf::Event& event);
