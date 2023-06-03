@@ -14,13 +14,12 @@ czoug1(Vector2f(40, 40))
 
 {
 	ingameStats.setOutlineColor(Color::White);
-	ingameStats.setPosition(VIEW_WIDTH-INGAMESTATS_WIDTH, 0);
+	ingameStats.setPosition(VIEW_WIDTH - INGAMESTATS_WIDTH, 0);
 	czoug1.setFillColor(Color::Green);
 	Vector2f cz1Position(50, 50);
 	czoug1.setPosition(cz1Position);
+	vector<CircleShape> Bullets;
 
-	float speed = 5.0f;
-	Vector2f velocity(0, 0);
 
 }
 
@@ -36,11 +35,10 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 	clock.restart();
 	float velocity = 300 * deltaTime;
 	Vector2f player1Pos = czoug1.getPosition();
-	
+
 	if (Keyboard::isKeyPressed(Keyboard::W))
 	{
 		player1Pos.y -= velocity;
-
 		if (player1Pos.y < 0)
 		{
 			player1Pos.y = 0;
@@ -75,53 +73,9 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 			player1Pos.x = VIEW_WIDTH - INGAMESTATS_WIDTH - czoug1.getSize().x;
 		}
 	}
+
 	czoug1.setPosition(player1Pos);
 
-
-
-		bulletTimer = 0;
-	}
-	/*
-	for (int i = 0; i < Bullets.size(); i++)
-	{
-		Bullets[i].move(0.f, -3.f);
-		if (Bullets[i].getPosition().y <= 0)
-			Bullets.erase(Bullets.begin() + i);
-	}
-	*/
-	for (int i = 0; i < Bullets.size(); i++)
-	{
-		cout << moveDirs.size() << endl;
-		Bullets[i].move(0.f,-3.f);
-		//Bullets[i].move(moveDirs[i]);
-		if (Bullets[i].getPosition().y <= 0)
-			Bullets.erase(Bullets.begin() + i);
-	}
-
-	/*
-	if (lastMove == 'W') {
-
-		for (int i = 0; i < Bullets.size(); i++)
-		{
-			Bullets[i].move(0.f, -3.f);
-			if (Bullets[i].getPosition().y <= 0)
-				Bullets.erase(Bullets.begin() + i);
-		}
-	}
-
-	else if (lastMove == 'S')
-	{
-		for (int i = 0; i < Bullets.size(); i++)
-		{
-			Bullets[i].move(0.f, 3.f);
-			if (Bullets[i].getPosition().y >= VIEW_HEIGHT)
-				Bullets.erase(Bullets.begin() + i);
-		}
-		
-	}
-	*/
-
-	
 
 	return nullptr;
 }

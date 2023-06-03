@@ -15,8 +15,6 @@ private:
 	sf::RectangleShape czoug1;
 	sf::Clock clock;
 	std::vector<sf::CircleShape> Bullets;
-	sf::CircleShape bullet;
-	int bulletTimer;
 public:
 	Arena(Level);
 	Scene* processEvent(sf::RenderWindow& window, sf::Event& event);
