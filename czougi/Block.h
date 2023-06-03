@@ -23,7 +23,7 @@ public:
 	ConcreteWall();
 };
 
-class Water : Block
+class Water : public Block
 {
 public:
 	Water();
