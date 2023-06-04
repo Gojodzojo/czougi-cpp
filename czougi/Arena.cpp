@@ -18,18 +18,26 @@ czoug1(Vector2f(40, 40))
 	czoug1.setFillColor(Color::Green);
 	Vector2f cz1Position(50, 50);
 	czoug1.setPosition(cz1Position);
-	vector<CircleShape> Bullets;
-
+	vector <Bullet> bullets;
+	Vector2f bulletDirection(0.0f, -1.0f); // Domyœlny kierunek pocisków
 
 }
 
 Scene* Arena::processEvent(sf::RenderWindow& window, sf::Event& event)
 {
+	if (event.type == Event::KeyPressed && event.key.code == Keyboard::Space)
+	{
+		Vector2f bulletStartPos(czoug1.getPosition().x + czoug1.getSize().x / 2 - BulletSize / 2,
+			czoug1.getPosition().y + czoug1.getSize().y / 2 - BulletSize / 2);
+
+		bullets.emplace_back(bulletStartPos, bulletDirection);
+	}
 	return nullptr;
 }
 
 Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 {
+
 
 	deltaTime = clock.getElapsedTime().asSeconds();
 	clock.restart();
@@ -39,6 +47,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 	if (Keyboard::isKeyPressed(Keyboard::W))
 	{
 		player1Pos.y -= velocity;
+		bulletDirection = Vector2f(0.0f, -1.0f);
 		if (player1Pos.y < 0)
 		{
 			player1Pos.y = 0;
@@ -47,7 +56,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 	if (Keyboard::isKeyPressed(Keyboard::A))
 	{
 		player1Pos.x -= velocity;
-
+		bulletDirection = Vector2f(-1.0f, 0.0f);
 		if (player1Pos.x < 0)
 		{
 			player1Pos.x = 0;
@@ -57,6 +66,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 	if (Keyboard::isKeyPressed(Keyboard::S))
 	{
 		player1Pos.y += velocity;
+		bulletDirection = Vector2f(0.0f, 1.0f);
 
 		if (player1Pos.y + czoug1.getSize().y > VIEW_HEIGHT)
 		{
@@ -67,6 +77,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 	if (Keyboard::isKeyPressed(Keyboard::D))
 	{
 		player1Pos.x += velocity;
+		bulletDirection = Vector2f(1.0f, 0.0f);
 
 		if (player1Pos.x + czoug1.getSize().x > VIEW_WIDTH - INGAMESTATS_WIDTH)
 		{
@@ -76,6 +87,18 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 	czoug1.setPosition(player1Pos);
 
+	for (auto& bullet : bullets)
+	{
+		bullet.shape.move(bullet.velocity);
+
+		if (bullet.shape.getPosition().x < 0 || bullet.shape.getPosition().x > VIEW_WIDTH ||
+			bullet.shape.getPosition().y < 0 || bullet.shape.getPosition().y > VIEW_HEIGHT
+			)
+		{
+			bullets.erase(bullets.begin());
+		}
+	
+	}
 
 	return nullptr;
 }
@@ -84,5 +107,9 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 void Arena::draw(sf::RenderWindow& window)
 {
 	window.draw(ingameStats);
+	for (const auto& bullet : bullets)
+	{
+		window.draw(bullet.shape);
+	}
 	window.draw(czoug1);
 }

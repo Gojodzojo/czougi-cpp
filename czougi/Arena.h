@@ -4,6 +4,7 @@
 #include "Level.h"
 #include "Window.h"
 #include "Block.h"
+#include "Bullet.h"
 #include <vector>
 class Arena :
 	public Scene
@@ -14,7 +15,9 @@ private:
 	sf::RectangleShape ingameStats;
 	sf::RectangleShape czoug1;
 	sf::Clock clock;
-	std::vector<sf::CircleShape> Bullets;
+	std::vector<Bullet> bullets;
+	sf::Vector2f bulletDirection; 
+
 public:
 	Arena(Level);
 	Scene* processEvent(sf::RenderWindow& window, sf::Event& event);
