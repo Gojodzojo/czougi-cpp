@@ -2,7 +2,7 @@
 #include"Scene.h"
 
 const float BulletSize = 10.0f;
-const float BulletSpeed = 5.0f;
+const float BulletSpeed = 10.0f;
 
 class Bullet
 {
