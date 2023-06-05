@@ -17,6 +17,8 @@ private:
 	sf::Clock clock;
 	std::vector<Bullet> bullets;
 	sf::Vector2f bulletDirection; 
+	int shootTimer;
+
 
 public:
 	Arena(Level);
