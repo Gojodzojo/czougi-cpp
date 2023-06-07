@@ -16,7 +16,7 @@ private:
 	sf::RectangleShape czoug1;
 	sf::Clock clock;
 	std::vector<Bullet> bullets;
-	sf::Vector2f bulletDirection; 
+	sf::Vector2f bulletDirection;
 	int shootTimer;
 
 
@@ -25,5 +25,6 @@ public:
 	Scene* processEvent(sf::RenderWindow& window, sf::Event& event);
 	Scene* doCalculations(sf::RenderWindow& window, float deltaTime);
 	void draw(sf::RenderWindow& window);
-};
+	bool isColliding(sf::Vector2f aPos, sf::Vector2f aSize, sf::Vector2f bPos, sf::Vector2f bSize, float, bool);
 
+};

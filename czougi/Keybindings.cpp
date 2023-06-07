@@ -4,3 +4,8 @@ Keybindings::Keybindings(sf::Keyboard::Key up, sf::Keyboard::Key down, sf::Keybo
 	: up(up), down(down), left(left), right(right), shot(shot)
 {
 }
+
+Keybindings::Keybindings()
+{
+
+}

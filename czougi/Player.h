@@ -18,7 +18,7 @@ public:
 	Player(int playerNumber);
 	sf::RectangleShape graphics;
 	std::vector<Eagle> eagles;
-
+	Keybindings movemenet;
 	void draw(sf::RenderWindow&);
 };
 

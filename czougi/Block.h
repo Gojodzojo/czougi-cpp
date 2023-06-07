@@ -11,13 +11,13 @@ public:
 	virtual void draw(sf::RenderWindow&);
 };
 
-class BrickWall : Block
+class BrickWall : public Block
 {
 public:
 	BrickWall();
 };
 
-class ConcreteWall : Block
+class ConcreteWall : public Block
 {
 public:
 	ConcreteWall();
@@ -29,7 +29,7 @@ public:
 	Water();
 };
 
-class Leaves : Block
+class Leaves : public Block
 {
 public:
 	Leaves();
