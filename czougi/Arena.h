@@ -17,7 +17,9 @@ private:
 	sf::Clock clock;
 	std::vector<Bullet> bullets;
 	sf::Vector2f bulletDirection;
+	std::vector<sf::RectangleShape> allBlocks;
 	int shootTimer;
+	sf::Vector2f playerPositions[4];
 
 
 public:
@@ -25,6 +27,7 @@ public:
 	Scene* processEvent(sf::RenderWindow& window, sf::Event& event);
 	Scene* doCalculations(sf::RenderWindow& window, float deltaTime);
 	void draw(sf::RenderWindow& window);
-	bool isColliding(sf::Vector2f aPos, sf::Vector2f aSize, sf::Vector2f bPos, sf::Vector2f bSize, float, bool);
+	//bool isColliding(sf::Vector2f aPos, sf::Vector2f aSize, sf::Vector2f bPos, sf::Vector2f bSize, float, bool);
+	bool isCollidingWithBlocks(float velocity);
 
 };

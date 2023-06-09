@@ -3,7 +3,7 @@
 using namespace sf;
 using namespace std;
 
-static Keybindings playersKeybindings[4] = {
+Keybindings playersKeybindings[4] = {
 	Keybindings(Keyboard::W, Keyboard::S, Keyboard::A, Keyboard::D, Keyboard::E),
 	Keybindings(Keyboard::Up, Keyboard::Down, Keyboard::Left, Keyboard::Right, Keyboard::RShift),
 	Keybindings(Keyboard::W, Keyboard::S, Keyboard::A, Keyboard::D, Keyboard::E),
