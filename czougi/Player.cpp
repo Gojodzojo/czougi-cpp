@@ -2,14 +2,14 @@
 
 using namespace sf;
 
-Player::Player(int playerNumber): graphics(Vector2f(BLOCK_SIZE * 2, BLOCK_SIZE * 2))
+Player::Player(PlayerColor playerColor): graphics(Vector2f(BLOCK_SIZE * 2, BLOCK_SIZE * 2))
 {
-	Color playerColor = Color::Red;
-	if (playerNumber == 0)		playerColor = Color::Yellow;
-	else if (playerNumber == 1)	playerColor = Color::Blue;
-	else if (playerNumber == 2)	playerColor = Color::Green;
+	Color color = Color::Red;
+	if (playerColor == 0)		color = Color::Yellow;
+	else if (playerColor == 1)	color = Color::Blue;
+	else if (playerColor == 2)	color = Color::Green;
 
-	graphics.setFillColor(playerColor);
+	graphics.setFillColor(color);
 }
 
 void Player::draw(RenderWindow& window)
@@ -17,14 +17,14 @@ void Player::draw(RenderWindow& window)
 	window.draw(graphics);
 }
 
-Eagle::Eagle(int playerNumber) : graphics(Vector2f(BLOCK_SIZE * 2, BLOCK_SIZE * 2))
+Eagle::Eagle(PlayerColor playerColor) : graphics(Vector2f(BLOCK_SIZE * 2, BLOCK_SIZE * 2))
 {
-	Color playerColor = Color::Red;
-	if (playerNumber == 0)		playerColor = Color::Yellow;
-	else if (playerNumber == 1)	playerColor = Color::Blue;
-	else if (playerNumber == 2)	playerColor = Color::Green;
+	Color color = Color::Red;
+	if (playerColor == 0)		color = Color::Yellow;
+	else if (playerColor == 1)	color = Color::Blue;
+	else if (playerColor == 2)	color = Color::Green;
 
-	graphics.setFillColor(playerColor);
+	graphics.setFillColor(color);
 }
 
 void Eagle::draw(RenderWindow& window)

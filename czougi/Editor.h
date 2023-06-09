@@ -6,6 +6,10 @@
 #include "window.h"
 #include "utils.h"
 #include "textures.h"
+#include "Tool.h"
+#include <vector>
+#include <memory>
+#include <iostream>
 
 class Editor :
 	public Scene
@@ -13,20 +17,10 @@ class Editor :
 private:
 	Level level;
 	sf::Text levelName;
+	sf::Vector2f mousePosition;
+	std::unique_ptr<Tool> tools[13];
+	int activeToolIndex;
 	sf::RectangleShape toolbarBackground;
-	sf::Sprite brickWallSprite;
-	sf::Sprite concreteWallSprite;
-	sf::Sprite waterSprite;
-	sf::Sprite leavesSprite;
-	sf::Sprite yellowTankSprite;
-	sf::Sprite blueTankSprite;
-	sf::Sprite greenTankSprite;
-	sf::Sprite redTankSprite;
-	sf::Sprite yellowEagleSprite;
-	sf::Sprite blueEagleSprite;
-	sf::Sprite greenEagleSprite;
-	sf::Sprite redEagleSprite;
-	sf::Sprite eraserIcon;
 	sf::RectangleShape horizontalLine;
 	sf::RectangleShape verticalLine;
 	sf::RectangleShape playIcon;
