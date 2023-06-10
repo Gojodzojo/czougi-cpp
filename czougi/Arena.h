@@ -6,6 +6,10 @@
 #include "Block.h"
 #include "Bullet.h"
 #include <vector>
+
+
+#define MAX_NUMBER_OF_PLAYERS 4
+
 class Arena :
 	public Scene
 {
@@ -15,11 +19,14 @@ private:
 	sf::RectangleShape ingameStats;
 	sf::RectangleShape czoug1;
 	sf::Clock clock;
-	std::vector<Bullet> bullets;
+	std::vector<Bullet> bullets[MAX_NUMBER_OF_PLAYERS];
 	sf::Vector2f bulletDirection;
 	std::vector<sf::RectangleShape> allBlocks;
-	int shootTimer;
-	sf::Vector2f playerPositions[4];
+	int shootTimer[MAX_NUMBER_OF_PLAYERS] = { 0 };
+	sf::Vector2f playerPositions[MAX_NUMBER_OF_PLAYERS];
+	sf::Vector2f bulletDirections[MAX_NUMBER_OF_PLAYERS];
+	
+	
 
 
 public:
