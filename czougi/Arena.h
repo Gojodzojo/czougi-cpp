@@ -21,9 +21,10 @@ private:
 	sf::Clock clock;
 	std::vector<Bullet> bullets[MAX_NUMBER_OF_PLAYERS];
 	sf::Vector2f bulletDirection;
-	std::vector<sf::RectangleShape> allBlocks;
+	//std::vector<sf::RectangleShape> allBlocks;
 	int shootTimer[MAX_NUMBER_OF_PLAYERS] = { 0 };
 	sf::Vector2f playerPositions[MAX_NUMBER_OF_PLAYERS];
+	sf::Vector2f eaglePositions[MAX_NUMBER_OF_PLAYERS];
 	sf::Vector2f bulletDirections[MAX_NUMBER_OF_PLAYERS];
 	
 	

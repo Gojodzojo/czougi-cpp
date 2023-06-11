@@ -30,7 +30,12 @@ bool isColliding(Vector2f aPos, Vector2f aSize, Vector2f bPos, Vector2f bSize, f
 }
 
 
- 
+bool bulletsColliding(RectangleShape bullet, RectangleShape block)
+{
+	FloatRect bounds1 = bullet.getGlobalBounds();
+	FloatRect bounds2 = block.getGlobalBounds();
+	return bounds1.intersects(bounds2);  //true jak sie nakladaja
+ }
 
 Arena::Arena(Level gameLevel) : level(gameLevel),
 ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT))
@@ -44,13 +49,19 @@ ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT))
 
 	Player p1(0);
 	Player p2(1);
-	p2.graphics.setPosition(700, 700);
+	p1.graphics.setPosition(700, 700);
+	p2.graphics.setPosition(200, 200);
 
-	p1.graphics.setPosition(500, 500);
 
 	level.players.push_back(p1);
 	level.players.push_back(p2);
+	Eagle e1(0);
+	Eagle e2(1);
 
+	e1.graphics.setPosition(800, 800);
+	e2.graphics.setPosition(100, 100);
+	level.eagles.push_back(e1);
+	level.eagles.push_back(e2);
 	BrickWall bw;
 	bw.graphics.setPosition(300, 800);
 	level.brickWalls.push_back(bw);
@@ -108,6 +119,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 	for (int i = 0; i < level.players.size(); i++)
 	{
 		playerPositions[i] = level.players[i].graphics.getPosition();
+		eaglePositions[i] = level.eagles[i].graphics.getPosition();
 	}
 
 		
@@ -346,11 +358,9 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 	level.players[i].graphics.setPosition(playerPositions[i]);
 	
 	
-	int j = 0;
+	int j = 0, k = 0;
 	for (auto& bullet : bullets[i])
 	{
-		cout << bullet.velocity.x << endl;
-		cout << bullet.velocity.y << endl;
 		if (bullet.velocity.x == 0 && bullet.velocity.y == 0)
 		{
 			bullet.shape.move(10.0f, 0);     //aby ustawić pierwszy pocisk musze znac rotacje czolgu 
@@ -361,14 +371,33 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		}
 			
 
-		if (bullet.shape.getPosition().x < 0 || bullet.shape.getPosition().x > VIEW_WIDTH - INGAMESTATS_WIDTH ||
-			bullet.shape.getPosition().y < 0 || bullet.shape.getPosition().y > VIEW_HEIGHT
+		if ((bullet.shape.getPosition().x < 0 || bullet.shape.getPosition().x > VIEW_WIDTH - INGAMESTATS_WIDTH ||
+			bullet.shape.getPosition().y < 0 || bullet.shape.getPosition().y > VIEW_HEIGHT)
 			)
 		{
 			bullets[i].erase(bullets[i].begin() + j); 
 			j--;  //bo usuwam pocisk, to musze odjac aby wyrownac j z bullet
+			//level.brickWalls.erase(level.brickWalls.begin() + i);
+		}
+		else
+		{
+			for (int k = 0; k < level.brickWalls.size(); k++)
+			{
+				if (bulletsColliding(bullet.shape, level.brickWalls[k].graphics))
+				{
+					cout << k << endl;
+					level.brickWalls.erase(level.brickWalls.begin() + k);
+					bullets[i].erase(bullets[i].begin() + j);
+					j--;   // który pocisk
+					k--;   // ktory blok
+					       // i = ktory gracz
+				}
+				
+			}
 		}
 		j++;
+		k++;
+
 	}
 	}
 	return nullptr;
@@ -384,6 +413,7 @@ void Arena::draw(sf::RenderWindow& window)
 	for (int i = 0; i < level.players.size(); i++)
 	{
 		level.players[i].draw(window);
+		level.eagles[i].draw(window);
 		for (const auto& bullet : bullets[i])
 		{
 			window.draw(bullet.shape);
