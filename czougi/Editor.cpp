@@ -116,11 +116,20 @@ Scene* Editor::processEvent(sf::RenderWindow& window, sf::Event& event)
 	{
 		Vector2f mousePosition = window.mapPixelToCoords(Vector2i(event.mouseButton.x, event.mouseButton.y));
 
-		for (int i = 0; i < sizeof(tools) / sizeof(unique_ptr<Tool>); i++)
+		if (mousePosition.x > 0 && mousePosition.x < VIEW_HEIGHT && mousePosition.y > 0 && mousePosition.y < VIEW_HEIGHT)
 		{
-			if (tools[i]->isHovered(mousePosition))
+			Vector2f cursorPosition(((int)mousePosition.x / LEVEL_SIZE) * BLOCK_SIZE, ((int)mousePosition.y / LEVEL_SIZE) * BLOCK_SIZE);
+			Vector2f selectionRectanglePosition = selectionRectangle.getPosition();
+			tools[activeToolIndex]->performAction(cursorPosition, selectionRectanglePosition, level);
+		}
+		else
+		{
+			for (int i = 0; i < sizeof(tools) / sizeof(unique_ptr<Tool>); i++)
 			{
-				activeToolIndex = i;
+				if (tools[i]->isHovered(mousePosition))
+				{
+					activeToolIndex = i;
+				}
 			}
 		}
 
@@ -144,7 +153,6 @@ Scene* Editor::processEvent(sf::RenderWindow& window, sf::Event& event)
 
 Scene* Editor::doCalculations(sf::RenderWindow& window, float deltaTime)
 {
-	cout << isSelecting << endl;
 	return nullptr;
 }
 
@@ -172,6 +180,36 @@ void Editor::draw(sf::RenderWindow& window)
 	{
 		verticalLine.setPosition(BLOCK_SIZE + i * BLOCK_SIZE, 0);
 		window.draw(verticalLine);
+	}
+
+	for (auto& block : level.brickWalls)
+	{
+		block.draw(window);
+	}
+
+	for (auto& block : level.concreteWalls)
+	{
+		block.draw(window);
+	}
+
+	for (auto& block : level.waters)
+	{
+		block.draw(window);
+	}
+
+	for (auto& block : level.leaves)
+	{
+		block.draw(window);
+	}
+
+	for (auto& player : level.players)
+	{
+		player.draw(window);
+
+		for (auto& eagle : player.eagles)
+		{
+			eagle.draw(window);
+		}
 	}
 
 	if (mousePosition.x > 0 && mousePosition.x < VIEW_HEIGHT && mousePosition.y > 0 && mousePosition.y < VIEW_HEIGHT)

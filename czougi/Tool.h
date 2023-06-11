@@ -16,7 +16,7 @@ public:
 	virtual bool isHovered(const sf::Vector2f&) = 0;
 	virtual void setPosition(float, float) = 0;
 	void drawAsCursor(sf::RenderWindow&, sf::Vector2f);
-	// virtual void performAction() = 0;
+	virtual void performAction(sf::Vector2f&, sf::Vector2f&, Level&) = 0;
 
 protected:
 	sf::Sprite graphics;
@@ -47,51 +47,49 @@ class BrickWallTool : public BlockTool
 {
 public: 
 	BrickWallTool() : BlockTool(brickWallTexture, sf::Color::Red) {};
+	void performAction(sf::Vector2f&, sf::Vector2f&, Level&);
 };
 
 class ConcreteWallTool : public BlockTool
 {
 public:
 	ConcreteWallTool() : BlockTool(concreteWallTexture, sf::Color::White) {};
+	void performAction(sf::Vector2f&, sf::Vector2f&, Level&);
 };
 
 class WaterTool : public BlockTool
 {
 public:
 	WaterTool() : BlockTool(waterTexture, sf::Color::Blue) {};
+	void performAction(sf::Vector2f&, sf::Vector2f&, Level&);
 };
 
 class LeavesTool : public BlockTool
 {
 public:
 	LeavesTool() : BlockTool(leavesTexture, sf::Color::Green) {};
+	void performAction(sf::Vector2f&, sf::Vector2f&, Level&);
 };
 
 class TankTool : public NonBlockTool
 {
-private:
-	bool isSelectable = false;
-
 public:
 	TankTool(sf::Texture*, PlayerColor);
+	void performAction(sf::Vector2f&, sf::Vector2f&, Level&);
 	PlayerColor playerColor;
 };
 
 class EagleTool : public NonBlockTool
 {
-private:
-	bool isSelectable = false;
-
 public:
 	EagleTool(sf::Texture*, PlayerColor);
+	void performAction(sf::Vector2f&, sf::Vector2f&, Level&);
 	PlayerColor playerColor;
 };
 
 class EraserTool : public NonBlockTool
 {
-private:
-	bool isSelectable = true;
-
 public:
 	EraserTool();
+	void performAction(sf::Vector2f&, sf::Vector2f&, Level&);
 };

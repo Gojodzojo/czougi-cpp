@@ -2,7 +2,7 @@
 
 using namespace sf;
 
-Player::Player(PlayerColor playerColor): graphics(Vector2f(BLOCK_SIZE * 2, BLOCK_SIZE * 2))
+Player::Player(PlayerColor playerColor): graphics(Vector2f(BLOCK_SIZE * 2, BLOCK_SIZE * 2)), playerColor(playerColor)
 {
 	Color color = Color::Red;
 	if (playerColor == 0)		color = Color::Yellow;

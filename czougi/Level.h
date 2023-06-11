@@ -13,7 +13,9 @@ public:
 	std::vector<Player> players;
 	std::vector<BrickWall> brickWalls;
 	std::vector<ConcreteWall> concreteWalls;
-	std::vector<Water> Waters;
+	std::vector<Water> waters;
 	std::vector<Leaves> leaves;
+
+	bool isTileAvaliable(float, float);
 };
 
