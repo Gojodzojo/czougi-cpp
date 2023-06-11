@@ -73,8 +73,46 @@ Scene* Editor::processEvent(sf::RenderWindow& window, sf::Event& event)
 	if (event.type == Event::MouseMoved)
 	{
 		mousePosition = window.mapPixelToCoords(Vector2i(event.mouseMove.x, event.mouseMove.y));
+		
+		if (isSelecting)
+		{
+			if (mousePosition.x > VIEW_HEIGHT && mousePosition.x < 0 && mousePosition.y > VIEW_HEIGHT && mousePosition.y < 0)
+			{
+				isSelecting = false;
+			}
+			else
+			{
+				Vector2f cursorPosition(((int)mousePosition.x / LEVEL_SIZE) * BLOCK_SIZE, ((int)mousePosition.y / LEVEL_SIZE) * BLOCK_SIZE);
+				Vector2f selectionRectanglePosition = selectionRectangle.getPosition();
+				Vector2f selectionRectangleSize = cursorPosition - selectionRectanglePosition;
+				Vector2f selectionRectangleOrigin(0, 0);
+
+				if (selectionRectangleSize.x >= 0)
+				{
+					selectionRectangleSize.x += BLOCK_SIZE;
+				}
+				else
+				{
+					selectionRectangleSize.x -= BLOCK_SIZE;
+					selectionRectangleOrigin.x -= BLOCK_SIZE;
+				}
+
+				if (selectionRectangleSize.y >= 0)
+				{
+					selectionRectangleSize.y += BLOCK_SIZE;
+				}
+				else
+				{
+					selectionRectangleSize.y -= BLOCK_SIZE;
+					selectionRectangleOrigin.y -= BLOCK_SIZE;
+				}
+				
+				selectionRectangle.setOrigin(selectionRectangleOrigin);
+				selectionRectangle.setSize(selectionRectangleSize);
+			}
+		}
 	}
-	if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left)
+	else if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left)
 	{
 		Vector2f mousePosition = window.mapPixelToCoords(Vector2i(event.mouseButton.x, event.mouseButton.y));
 
@@ -85,6 +123,20 @@ Scene* Editor::processEvent(sf::RenderWindow& window, sf::Event& event)
 				activeToolIndex = i;
 			}
 		}
+
+		isSelecting = false;
+	}
+	else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left && tools[activeToolIndex]->isSelectable &&
+		mousePosition.x > 0 && mousePosition.x < VIEW_HEIGHT && mousePosition.y > 0 && mousePosition.y < VIEW_HEIGHT)
+	{
+		Vector2f mousePosition = window.mapPixelToCoords(Vector2i(event.mouseButton.x, event.mouseButton.y));
+	
+		Vector2f cursorPosition(((int)mousePosition.x / LEVEL_SIZE) * BLOCK_SIZE, ((int)mousePosition.y / LEVEL_SIZE) * BLOCK_SIZE);
+		selectionRectangle.setPosition(cursorPosition);
+		selectionRectangle.setSize(Vector2f(BLOCK_SIZE, BLOCK_SIZE));
+		selectionRectangle.setOrigin(0, 0);
+		selectionRectangle.setFillColor(tools[activeToolIndex]->selectionColor);
+		isSelecting = true;
 	}
 
 	return nullptr;
@@ -92,6 +144,7 @@ Scene* Editor::processEvent(sf::RenderWindow& window, sf::Event& event)
 
 Scene* Editor::doCalculations(sf::RenderWindow& window, float deltaTime)
 {
+	cout << isSelecting << endl;
 	return nullptr;
 }
 
@@ -124,8 +177,16 @@ void Editor::draw(sf::RenderWindow& window)
 	if (mousePosition.x > 0 && mousePosition.x < VIEW_HEIGHT && mousePosition.y > 0 && mousePosition.y < VIEW_HEIGHT)
 	{
 		window.setMouseCursorVisible(false);
-		Vector2f cursorPosition(((int)mousePosition.x / LEVEL_SIZE) * BLOCK_SIZE, ((int)mousePosition.y / LEVEL_SIZE) * BLOCK_SIZE);
-		tools[activeToolIndex]->drawAsCursor(window, cursorPosition);
+
+		if (isSelecting)
+		{
+			window.draw(selectionRectangle);
+		}
+		else
+		{
+			Vector2f cursorPosition(((int)mousePosition.x / LEVEL_SIZE) * BLOCK_SIZE, ((int)mousePosition.y / LEVEL_SIZE) * BLOCK_SIZE);
+			tools[activeToolIndex]->drawAsCursor(window, cursorPosition);
+		}
 	}
 	else
 	{

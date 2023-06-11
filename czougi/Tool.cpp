@@ -2,9 +2,10 @@
 
 using namespace sf;
 
-Tool::Tool(sf::Texture* texture, sf::Color selectionColor) :
+Tool::Tool(sf::Texture* texture, sf::Color selectionColor, bool isSelectable) :
 	graphics(*texture),
-	selectionColor(selectionColor)
+	selectionColor(selectionColor),
+	isSelectable(isSelectable)
 {
 	graphics.setScale(TEXTURE_SCALE);
 }
@@ -17,7 +18,7 @@ void Tool::drawAsCursor(RenderWindow& window, Vector2f mousePosition)
 	graphics.setPosition(graphicsPosition);
 }
 
-BlockTool::BlockTool(sf::Texture* texture, sf::Color selectionColor) : Tool(texture, selectionColor)
+BlockTool::BlockTool(sf::Texture* texture, sf::Color selectionColor) : Tool(texture, selectionColor, true)
 {
 }
 
@@ -33,7 +34,7 @@ void BlockTool::drawOnToolbar(RenderWindow& window)
 	window.draw(graphics);
 }
 
-NonBlockTool::NonBlockTool(sf::Texture* texture, sf::Color selectionColor) : Tool(texture, selectionColor)
+NonBlockTool::NonBlockTool(sf::Texture* texture, sf::Color selectionColor, bool isSelectable) : Tool(texture, selectionColor, isSelectable)
 {
 }
 
@@ -66,14 +67,14 @@ void NonBlockTool::setPosition(float x, float y)
 	graphics.setPosition(x, y);
 }
 
-TankTool::TankTool(Texture* texture, PlayerColor playerColor) : playerColor(playerColor), NonBlockTool(texture, Color::Black)
+TankTool::TankTool(Texture* texture, PlayerColor playerColor) : playerColor(playerColor), NonBlockTool(texture, Color::Black, false)
 {
 }
 
-EagleTool::EagleTool(Texture* texture, PlayerColor playerColor) : playerColor(playerColor), NonBlockTool(texture, Color::Black)
+EagleTool::EagleTool(Texture* texture, PlayerColor playerColor) : playerColor(playerColor), NonBlockTool(texture, Color::Black, false)
 {
 }
 
-EraserTool::EraserTool() :  NonBlockTool(eraserTexture, Color::Red)
+EraserTool::EraserTool() :  NonBlockTool(eraserTexture, Color::Red, true)
 {
 }

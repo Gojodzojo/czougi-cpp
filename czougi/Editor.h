@@ -18,8 +18,11 @@ private:
 	Level level;
 	sf::Text levelName;
 	sf::Vector2f mousePosition;
+	sf::Vector2f cursorPosition;
 	std::unique_ptr<Tool> tools[13];
 	int activeToolIndex;
+	bool isSelecting;
+	sf::RectangleShape selectionRectangle;
 	sf::RectangleShape toolbarBackground;
 	sf::RectangleShape horizontalLine;
 	sf::RectangleShape verticalLine;

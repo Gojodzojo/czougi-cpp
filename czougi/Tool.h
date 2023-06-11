@@ -9,7 +9,7 @@
 class Tool
 {
 public:
-	Tool(sf::Texture* texture, sf::Color selectionColor);
+	Tool(sf::Texture* texture, sf::Color selectionColor, bool isSelectable);
 	bool isSelectable;	// true jeœli da siê zaznaczyæ obszar tym narzêdziem
 	sf::Color selectionColor;	// Kolor zaznaczenia (jeœli isSelectable == true)
 	virtual void drawOnToolbar(sf::RenderWindow& window) = 0;
@@ -27,8 +27,6 @@ class BlockTool : public Tool
 private:
 	float x;
 	float y;
-	bool isSelectable = true;
-
 public:
 	BlockTool(sf::Texture* texture, sf::Color selectionColor);
 	void drawOnToolbar(sf::RenderWindow& window);
@@ -39,7 +37,7 @@ public:
 class NonBlockTool : public Tool
 {
 public:
-	NonBlockTool(sf::Texture* texture, sf::Color selectionColor);
+	NonBlockTool(sf::Texture* texture, sf::Color selectionColor, bool isSelectable);
 	void drawOnToolbar(sf::RenderWindow& window);
 	bool isHovered(const sf::Vector2f&);
 	void setPosition(float, float);
