@@ -3,6 +3,8 @@
 #include <iostream>
 #include "Block.h"
 
+extern const int BLOCK_SIZE;
+
 const sf::Vector2f TEXTURE_SCALE(BLOCK_SIZE / 512.0, BLOCK_SIZE / 512.0);
 
 extern sf::Texture* yellowTankTexture;

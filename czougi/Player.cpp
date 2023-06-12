@@ -2,14 +2,17 @@
 
 using namespace sf;
 
-Player::Player(PlayerColor playerColor): graphics(Vector2f(BLOCK_SIZE * 2, BLOCK_SIZE * 2)), playerColor(playerColor)
+Texture* getPlayerTexture(PlayerColor playerColor)
 {
-	Color color = Color::Red;
-	if (playerColor == 0)		color = Color::Yellow;
-	else if (playerColor == 1)	color = Color::Blue;
-	else if (playerColor == 2)	color = Color::Green;
+	if (playerColor == 0)		return yellowTankTexture;
+	if (playerColor == 1)		return blueTankTexture;
+	if (playerColor == 2)		return greenTankTexture;
+	return redTankTexture;
+}
 
-	graphics.setFillColor(color);
+Player::Player(PlayerColor playerColor): graphics(*getPlayerTexture(playerColor)), playerColor(playerColor)
+{
+	graphics.setScale(TEXTURE_SCALE);
 }
 
 void Player::draw(RenderWindow& window)
@@ -17,14 +20,17 @@ void Player::draw(RenderWindow& window)
 	window.draw(graphics);
 }
 
-Eagle::Eagle(PlayerColor playerColor) : graphics(Vector2f(BLOCK_SIZE * 2, BLOCK_SIZE * 2))
+Texture* getEagleTexture(PlayerColor playerColor)
 {
-	Color color = Color::Red;
-	if (playerColor == 0)		color = Color::Yellow;
-	else if (playerColor == 1)	color = Color::Blue;
-	else if (playerColor == 2)	color = Color::Green;
+	if (playerColor == 0)		return yellowEagleTexture;
+	if (playerColor == 1)		return blueEagleTexture;
+	if (playerColor == 2)		return greenEagleTexture;
+	return redEagleTexture;
+}
 
-	graphics.setFillColor(color);
+Eagle::Eagle(PlayerColor playerColor) : graphics(*getEagleTexture(playerColor))
+{
+	graphics.setScale(TEXTURE_SCALE);
 }
 
 void Eagle::draw(RenderWindow& window)

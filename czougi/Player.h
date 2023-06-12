@@ -15,7 +15,7 @@ class Eagle
 {
 public:
 	Eagle(PlayerColor);
-	sf::RectangleShape graphics;
+	sf::Sprite graphics;
 
 	void draw(sf::RenderWindow&);
 };
@@ -24,7 +24,7 @@ class Player
 {
 public:
 	Player(PlayerColor);
-	sf::RectangleShape graphics;
+	sf::Sprite graphics;
 	std::vector<Eagle> eagles;
 	PlayerColor playerColor;
 
