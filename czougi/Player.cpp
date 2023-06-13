@@ -10,7 +10,7 @@ Texture* getPlayerTexture(PlayerColor playerColor)
 	return redTankTexture;
 }
 
-Player::Player(PlayerColor playerColor): graphics(*getPlayerTexture(playerColor)), playerColor(playerColor)
+Player::Player(PlayerColor playerColor): graphics(*getPlayerTexture(playerColor)), playerColor(playerColor), eagle(playerColor)
 {
 	graphics.setScale(TEXTURE_SCALE);
 }
@@ -28,7 +28,7 @@ Texture* getEagleTexture(PlayerColor playerColor)
 	return redEagleTexture;
 }
 
-Eagle::Eagle(PlayerColor playerColor) : graphics(*getEagleTexture(playerColor))
+Eagle::Eagle(PlayerColor playerColor) : graphics(*getEagleTexture(playerColor)), isPresent(false)
 {
 	graphics.setScale(TEXTURE_SCALE);
 }

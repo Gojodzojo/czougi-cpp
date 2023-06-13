@@ -10,6 +10,7 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include "LevelsList.h"
 
 class Editor :
 	public Scene

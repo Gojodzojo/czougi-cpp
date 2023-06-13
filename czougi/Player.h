@@ -16,6 +16,7 @@ class Eagle
 public:
 	Eagle(PlayerColor);
 	sf::Sprite graphics;
+	bool isPresent;
 
 	void draw(sf::RenderWindow&);
 };
@@ -25,7 +26,7 @@ class Player
 public:
 	Player(PlayerColor);
 	sf::Sprite graphics;
-	std::vector<Eagle> eagles;
+	Eagle eagle;
 	PlayerColor playerColor;
 
 	void draw(sf::RenderWindow&);

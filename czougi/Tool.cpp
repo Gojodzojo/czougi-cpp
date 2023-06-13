@@ -111,9 +111,8 @@ void EagleTool::performAction(Vector2f& cursorPosition, Vector2f& selectionRecta
 		{
 			if (player.playerColor == this->playerColor)
 			{
-				Eagle eagle(playerColor);
-				eagle.graphics.setPosition(cursorPosition.x, cursorPosition.y);
-				player.eagles.push_back(eagle);
+				player.eagle.graphics.setPosition(cursorPosition.x, cursorPosition.y);
+				player.eagle.isPresent = true;
 				return;
 			}
 		}
@@ -271,17 +270,14 @@ void EraserTool::performAction(Vector2f& cursorPosition, Vector2f& selectionRect
 					goto cnt;
 				}
 				
-				for (int j = 0; j < level.players[i].eagles.size(); j++)
+				Vector2f eaglePosition = level.players[i].eagle.graphics.getPosition();
+				if (x == eaglePosition.x && y == eaglePosition.y ||
+					x == eaglePosition.x + BLOCK_SIZE && y == eaglePosition.y ||
+					x == eaglePosition.x && y == eaglePosition.y + BLOCK_SIZE ||
+					x == eaglePosition.x + BLOCK_SIZE && y == eaglePosition.y + BLOCK_SIZE)
 				{
-					Vector2f eaglePosition = level.players[i].eagles[j].graphics.getPosition();
-					if (x == eaglePosition.x && y == eaglePosition.y ||
-						x == eaglePosition.x + BLOCK_SIZE && y == eaglePosition.y ||
-						x == eaglePosition.x && y == eaglePosition.y + BLOCK_SIZE ||
-						x == eaglePosition.x + BLOCK_SIZE && y == eaglePosition.y + BLOCK_SIZE)
-					{
-						level.players[i].eagles.erase(level.players[i].eagles.begin() + j);
-						goto cnt;
-					}
+					level.players[i].eagle.isPresent = false;
+					goto cnt;
 				}
 			}
 

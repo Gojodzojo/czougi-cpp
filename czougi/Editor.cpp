@@ -131,6 +131,12 @@ Scene* Editor::processEvent(sf::RenderWindow& window, sf::Event& event)
 					activeToolIndex = i;
 				}
 			}
+
+			if (isHovered(saveIcon.getGlobalBounds(), mousePosition) && level.canBeSaved())
+			{
+				level.save();
+				return new LevelsList;
+			}
 		}
 
 		isSelecting = false;
@@ -206,9 +212,9 @@ void Editor::draw(sf::RenderWindow& window)
 	{
 		player.draw(window);
 
-		for (auto& eagle : player.eagles)
+		if (player.eagle.isPresent)
 		{
-			eagle.draw(window);
+			player.eagle.draw(window);
 		}
 	}
 
