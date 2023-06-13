@@ -445,13 +445,13 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 					level.players[k].graphics.setPosition(playerPositions[k]);
 				}
 			}
-			
 		}
 		j++;
 		//j = który pocisk
 		//k =  ktory blok
 		//level.players[i]._playerNumber].
 	}
+		if (level.eagles[i]._isAlive == 1)
 		level.players[i]._timeSinceDeath += deltaTime;
 
 	}
@@ -466,6 +466,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 					if (count == 3)
 					{
 						if (level.eagles[0]._isAlive == 1)
+
 							cout << "Wygral gracz 1" << endl;
 						else if (level.eagles[1]._isAlive == 1)
 							cout << "Wygral gracz 2" << endl;
