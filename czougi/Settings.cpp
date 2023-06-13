@@ -6,8 +6,8 @@ using namespace std;
 Keybindings playersKeybindings[4] = {
 	Keybindings(Keyboard::W, Keyboard::S, Keyboard::A, Keyboard::D, Keyboard::E),
 	Keybindings(Keyboard::Up, Keyboard::Down, Keyboard::Left, Keyboard::Right, Keyboard::Space),
-	Keybindings(Keyboard::W, Keyboard::S, Keyboard::A, Keyboard::D, Keyboard::E),
-	Keybindings(Keyboard::W, Keyboard::S, Keyboard::A, Keyboard::D, Keyboard::E),
+	Keybindings(Keyboard::Z, Keyboard::X, Keyboard::C, Keyboard::V, Keyboard::B),
+	Keybindings(Keyboard::H, Keyboard::U, Keyboard::J, Keyboard::K, Keyboard::L),
 };
 
 // £adowanie ustawieñ z pliku

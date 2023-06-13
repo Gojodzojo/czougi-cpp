@@ -3,6 +3,7 @@
 #include <vector>
 #include "Player.h"
 #include "Block.h"
+#include "Eagles.h"
 
 class Level
 {

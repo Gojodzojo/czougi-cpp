@@ -6,18 +6,19 @@
 class Eagle
 {
 public:
+	int _playerNumber;
 	Eagle(int playerNumber);
 	sf::RectangleShape graphics;
-
 	void draw(sf::RenderWindow&);
 };
 
 class Player
 {
 public:
-	Player(int playerNumber);
+	int _playerNumber;
+	Player(int playerNumber, sf::Vector2f startPos);
 	sf::RectangleShape graphics;
-	std::vector<Eagle> eagles;
+	sf::Vector2f _startPos;
 	Keybindings movemenet;
 	void draw(sf::RenderWindow&);
 };
