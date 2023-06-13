@@ -19,7 +19,6 @@ const int PLAYER_SIZE = 2 * BLOCK_SIZE - 5;
 
 
 
-
 bool isColliding(Vector2f aPos, Vector2f aSize, Vector2f bPos, Vector2f bSize, float velocity, bool direction)
 {
 	if (direction)
@@ -57,8 +56,8 @@ ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT))
 	p3.graphics.setPosition(p3._startPos);
 	p4.graphics.setPosition(p4._startPos);
 
-	level.players.push_back(p2);
 	level.players.push_back(p1);
+	level.players.push_back(p2);
 	level.players.push_back(p3);
 	level.players.push_back(p4);
 
@@ -187,7 +186,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 			for (int j = 0; j < level.players.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.players[j].graphics.getPosition(), level.players[j].graphics.getSize(), -velocity, 0) && i != j)
+				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.players[j].graphics.getPosition(), level.players[j].graphics.getSize(), -velocity, 0) && i != j && level.players[j]._hasCollision)
 				{
 					playerPositions[i].y = level.players[j].graphics.getPosition().y + level.players[j].graphics.getSize().y + velocity;
 				}
@@ -242,7 +241,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 			for (int j = 0; j < level.players.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.players[j].graphics.getPosition(), level.players[j].graphics.getSize(), -velocity, 1) && i != j)
+				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.players[j].graphics.getPosition(), level.players[j].graphics.getSize(), -velocity, 1) && i != j && level.players[j]._hasCollision)
 				{
 					playerPositions[i].x = level.players[j].graphics.getPosition().x + level.players[j].graphics.getSize().x + velocity;
 				}
@@ -300,7 +299,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 			for (int j = 0; j < level.players.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.players[j].graphics.getPosition(), level.players[j].graphics.getSize(), velocity, 0) && i != j)
+				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.players[j].graphics.getPosition(), level.players[j].graphics.getSize(), velocity, 0) && i != j && level.players[j]._hasCollision)
 				{
 					playerPositions[i].y = level.players[j].graphics.getPosition().y - level.players[i].graphics.getSize().y - velocity;
 				}
@@ -356,7 +355,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 			for (int j = 0; j < level.players.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.players[j].graphics.getPosition(), level.players[j].graphics.getSize(), velocity, 1) && i != j)
+				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.players[j].graphics.getPosition(), level.players[j].graphics.getSize(), velocity, 1) && i != j && level.players[j]._hasCollision)
 				{
 					playerPositions[i].x = level.players[j].graphics.getPosition().x - level.players[i].graphics.getSize().x - velocity;
 				}
@@ -402,12 +401,16 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 			{
 				if (bulletsColliding(bullet.shape, level.eagles[k].graphics))
 				{
-					bullets[i].erase(bullets[i].begin() + j);
+					if (level.eagles[k]._isAlive)
+					{
+						bullets[i].erase(bullets[i].begin() + j);
+						j--;
+					}
 					if (level.players[i]._playerNumber != level.eagles[k]._playerNumber)
 					{
 						level.eagles[k]._isAlive = 0;
 					}
-					j--;
+				
 
 				}
 			}
@@ -456,38 +459,44 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 	}
 	int count = 0;
-	for (int i = 0; i < level.eagles.size(); i++)
+	for (int i = 0; i < level.players.size(); i++)
 	{
-		if (level.eagles[i]._isAlive == 0)
-			{
-				count++;
-				if (level.eagles.size() == 4)
-				{
-					if (count == 3)
-					{
-						if (level.eagles[0]._isAlive == 1)
-
-							cout << "Wygral gracz 1" << endl;
-						else if (level.eagles[1]._isAlive == 1)
-							cout << "Wygral gracz 2" << endl;
-						else if (level.eagles[2]._isAlive == 1)
-							cout << "Wygral gracz 3" << endl;
-						else if (level.eagles[3]._isAlive == 1)
-							cout << "Wygral gracz 4" << endl;
-					}
-				}
-				else if (level.eagles.size() == 2)
-				{
-						if (count == 1)
-						{
-							if (level.eagles[0]._isAlive == 1)
-								cout << "Wygral gracz 1" << endl;
-							else if (level.eagles[1]._isAlive == 1)
-								cout << "Wygral gracz 2" << endl;
-						}
-				}
-			}
-		
+		//if (level.eagles[i]._isAlive == 0)
+		//	{
+		//		count++;
+		//		if (level.eagles.size() == 4)
+		//		{
+		//			if (count == 3)
+		//			{
+		//				if (level.eagles[0]._isAlive == 1)
+		//					cout << "Wygral gracz 1" << endl;
+		//				else if (level.eagles[1]._isAlive == 1)
+		//					cout << "Wygral gracz 2" << endl;
+		//				else if (level.eagles[2]._isAlive == 1)
+		//					cout << "Wygral gracz 3" << endl;
+		//				else if (level.eagles[3]._isAlive == 1)
+		//					cout << "Wygral gracz 4" << endl;
+		//			}
+		//		}
+		//		else if (level.eagles.size() == 2)
+		//		{
+		//				if (count == 1)
+		//				{
+		//					if (level.eagles[0]._isAlive == 1)
+		//						cout << "Wygral gracz 1" << endl;
+		//					else if (level.eagles[1]._isAlive == 1)
+		//						cout << "Wygral gracz 2" << endl;
+		//				}
+		//		}
+		//	}
+		if (level.players[i]._isAlive == 0)
+		{
+			count++;
+			if (count == (level.players.size() - 1))
+				gameEnded = 1;
+		}
+		if(gameEnded && level.players[i]._isAlive)
+			cout << "Wygral gracz: " << i + 1 << endl;
 	}
 
 	return nullptr;
@@ -513,11 +522,18 @@ void Arena::draw(sf::RenderWindow& window)
 		if (level.players[i]._timeSinceDeath >= 3.5)
 		{
 			level.players[i].draw(window);
+			level.players[i]._hasCollision = 1;
 			for (const auto& bullet : bullets[i])
 			{
 				window.draw(bullet.shape);
 			}
 	
+		}
+		else
+		{
+			level.players[i]._hasCollision = 0;
+			if(level.eagles[i]._isAlive == 0)
+				level.players[i]._isAlive = 0;
 		}
 	}
 	for (int i = 0; i < level.brickWalls.size(); i++)

@@ -10,7 +10,8 @@ public:
 	Eagle(int playerNumber);
 	sf::RectangleShape graphics;
 	void draw(sf::RenderWindow&);
-	int _isAlive;
+	bool _isAlive;
+	
 };
 
 class Player
@@ -23,6 +24,8 @@ public:
 	sf::Vector2f _startPos;
 	Keybindings movemenet;
 	void draw(sf::RenderWindow&);
+	bool _hasCollision;
+	bool _isAlive;
 };
 
 

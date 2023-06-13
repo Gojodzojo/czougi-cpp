@@ -15,6 +15,8 @@ Player::Player(int playerNumber, Vector2f startPos) : graphics(Vector2f(PLAYER_S
 	_playerNumber = playerNumber;
 	_startPos = startPos;
 	_timeSinceDeath = 3.5;
+	_hasCollision = 1;
+	_isAlive = 1;
 }
 
 void Player::draw(RenderWindow& window)
