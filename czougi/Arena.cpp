@@ -50,31 +50,36 @@ ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT))
 	Player p1(0, Vector2f(700,700));
 	Player p2(1, Vector2f(200,200));
 	Player p3(2, Vector2f(500, 500));
-	Player p4(3, Vector2f(100, 100));
+	Player p4(3, Vector2f(50, 550));
 
 	p1.graphics.setPosition(p1._startPos);
 	p2.graphics.setPosition(p2._startPos);
 	p3.graphics.setPosition(p3._startPos);
 	p4.graphics.setPosition(p4._startPos);
 
-	level.players.push_back(p1);
 	level.players.push_back(p2);
+	level.players.push_back(p1);
 	level.players.push_back(p3);
 	level.players.push_back(p4);
 
 	Eagle e1(0);
 	Eagle e2(1);
+	Eagle e3(2);
+	Eagle e4(3);
 	e1.graphics.setPosition(800, 800);
 	e2.graphics.setPosition(100, 100);
+	e3.graphics.setPosition(100, 800);
+	e4.graphics.setPosition(800, 100);
 	level.eagles.push_back(e1);
 	level.eagles.push_back(e2);
+	level.eagles.push_back(e3);
+	level.eagles.push_back(e4);
 
-	for (auto player : level.players)
+	
+	for (int i = 0; i < level.players.size(); i++)
 	{
-		tanksInGame.push_back(player.graphics);
-
+		level.players[i]._timeSinceDeath = 3.5;
 	}
-
 	
 
 	BrickWall bw;
@@ -110,7 +115,7 @@ Scene* Arena::processEvent(sf::RenderWindow& window, sf::Event& event)
 	{
 		if (shootTimer[i] != 15)
 			shootTimer[i]++;
-		if (Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].shot) && shootTimer[i] == 15)
+		if (Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].shot) && shootTimer[i] == 15 && level.players[i]._timeSinceDeath >= 3.5)
 		{
 			Vector2f bulletStartPos(level.players[i].graphics.getPosition().x + level.players[i].graphics.getSize().x / 2 - BulletSize / 2,
 				level.players[i].graphics.getPosition().y + level.players[i].graphics.getSize().y / 2 - BulletSize / 2);  // ustawienie pocisków na środku
@@ -140,11 +145,10 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 
 
-
 	for (int i = 0; i < level.players.size(); i++)
 	{	
 
-	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].up) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].down) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].right))
+	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].up) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].down) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].right) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].left) && level.players[i]._timeSinceDeath >= 3.5)
 	{
 		bulletDirections[i] = Vector2f(0.0f, -1.0f);
 		for (int i = 0; i < level.players.size(); i++)
@@ -194,9 +198,9 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		{
 			playerPositions[i].y = 0;
 		}
-
+		level.players[i].graphics.setPosition(playerPositions[i]);
 	}
-	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].left) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].right))
+	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].left) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].right) && level.players[i]._timeSinceDeath >= 3.5)
 	{
 		bulletDirections[i] = Vector2f(-1.0f, 0.0f);
 
@@ -250,10 +254,10 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		{
 			playerPositions[i].x = 0;
 		}
-
+		level.players[i].graphics.setPosition(playerPositions[i]);
 	}
 
-	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].down) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].right) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].left))
+	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].down) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].right) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].left) && level.players[i]._timeSinceDeath >= 3.5 )
 	{
 		bulletDirections[i] = Vector2f(0.0f, 1.0f);
 
@@ -307,10 +311,10 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		{
 			playerPositions[i].y = VIEW_HEIGHT - level.players[i].graphics.getSize().y;
 		}
-
+		level.players[i].graphics.setPosition(playerPositions[i]);
 	}
 
-	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].right) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].left))
+	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].right) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].left) && level.players[i]._timeSinceDeath >= 3.5)
 	{
 		bulletDirections[i] = Vector2f(1.0f, 0.0f);
 
@@ -364,12 +368,12 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		{
 			playerPositions[i].x = VIEW_WIDTH - INGAMESTATS_WIDTH - level.players[i].graphics.getSize().x;
 		}
-
+		level.players[i].graphics.setPosition(playerPositions[i]);
 
 	}
 
 
-	level.players[i].graphics.setPosition(playerPositions[i]);
+	//level.players[i].graphics.setPosition(playerPositions[i]);
 	
 	
 	int j = 0;
@@ -401,8 +405,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 					bullets[i].erase(bullets[i].begin() + j);
 					if (level.players[i]._playerNumber != level.eagles[k]._playerNumber)
 					{
-						cout << level.eagles[k]._playerNumber << endl;
-						level.eagles.erase(level.eagles.begin() + k);
+						level.eagles[k]._isAlive = 0;
 					}
 					j--;
 
@@ -433,23 +436,59 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 			for (int k = 0; k < level.players.size(); k++)
 			{
-				if (bulletsColliding(bullet.shape, level.players[k].graphics) && i != k)
+				if (bulletsColliding(bullet.shape, level.players[k].graphics) && i != k && level.players[k]._timeSinceDeath >= 3.5)
 				{
-					playerPositions[k] = level.players[k]._startPos; 
-					level.players[k].graphics.setPosition(playerPositions[k]);
+					level.players[k]._timeSinceDeath = 0;
 					bullets[i].erase(bullets[i].begin() + j);
 					j--;
+					playerPositions[k] = level.players[k]._startPos; 
+					level.players[k].graphics.setPosition(playerPositions[k]);
 				}
 			}
 			
 		}
 		j++;
-
 		//j = który pocisk
 		//k =  ktory blok
 		//level.players[i]._playerNumber].
 	}
+		level.players[i]._timeSinceDeath += deltaTime;
+
 	}
+	int count = 0;
+	for (int i = 0; i < level.eagles.size(); i++)
+	{
+		if (level.eagles[i]._isAlive == 0)
+			{
+				count++;
+				if (level.eagles.size() == 4)
+				{
+					if (count == 3)
+					{
+						if (level.eagles[0]._isAlive == 1)
+							cout << "Wygral gracz 1" << endl;
+						else if (level.eagles[1]._isAlive == 1)
+							cout << "Wygral gracz 2" << endl;
+						else if (level.eagles[2]._isAlive == 1)
+							cout << "Wygral gracz 3" << endl;
+						else if (level.eagles[3]._isAlive == 1)
+							cout << "Wygral gracz 4" << endl;
+					}
+				}
+				else if (level.eagles.size() == 2)
+				{
+						if (count == 1)
+						{
+							if (level.eagles[0]._isAlive == 1)
+								cout << "Wygral gracz 1" << endl;
+							else if (level.eagles[1]._isAlive == 1)
+								cout << "Wygral gracz 2" << endl;
+						}
+				}
+			}
+		
+	}
+
 	return nullptr;
 }
 
@@ -464,15 +503,20 @@ void Arena::draw(sf::RenderWindow& window)
 		level.Waters[i].draw(window);
 	for (int i = 0; i < level.eagles.size(); i++)
 	{
-		level.eagles[i].draw(window);
+		if (level.eagles[i]._isAlive==1)
+			level.eagles[i].draw(window);
 	}
 
 	for (int i = 0; i < level.players.size(); i++)
 	{
-		level.players[i].draw(window);
-		for (const auto& bullet : bullets[i])
+		if (level.players[i]._timeSinceDeath >= 3.5)
 		{
-			window.draw(bullet.shape);
+			level.players[i].draw(window);
+			for (const auto& bullet : bullets[i])
+			{
+				window.draw(bullet.shape);
+			}
+	
 		}
 	}
 	for (int i = 0; i < level.brickWalls.size(); i++)

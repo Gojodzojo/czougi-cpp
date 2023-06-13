@@ -14,6 +14,7 @@ Player::Player(int playerNumber, Vector2f startPos) : graphics(Vector2f(PLAYER_S
 	graphics.setFillColor(playerColor);
 	_playerNumber = playerNumber;
 	_startPos = startPos;
+	_timeSinceDeath = 3.5;
 }
 
 void Player::draw(RenderWindow& window)
@@ -30,6 +31,7 @@ Eagle::Eagle(int playerNumber) : graphics(Vector2f(BLOCK_SIZE * 2, BLOCK_SIZE * 
 
 	graphics.setFillColor(playerColor);
 	_playerNumber = playerNumber;
+	_isAlive = 1;
 }
 
 void Eagle::draw(RenderWindow& window)

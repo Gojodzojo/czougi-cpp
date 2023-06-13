@@ -10,12 +10,14 @@ public:
 	Eagle(int playerNumber);
 	sf::RectangleShape graphics;
 	void draw(sf::RenderWindow&);
+	int _isAlive;
 };
 
 class Player
 {
 public:
 	int _playerNumber;
+	float _timeSinceDeath;
 	Player(int playerNumber, sf::Vector2f startPos);
 	sf::RectangleShape graphics;
 	sf::Vector2f _startPos;
