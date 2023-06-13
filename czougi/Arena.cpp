@@ -13,10 +13,7 @@ const int INGAMESTATS_WIDTH = VIEW_WIDTH - VIEW_HEIGHT;  // obszar na statystki
 const int PLAYER_SIZE = 2 * BLOCK_SIZE - 5;
 
 
-bool debug = 0;
-
 //CO DO ZROBIENIA:
-//- po zniszczeniu czolg sie odradza
 //- jak dany orzel zginie, to czolg sie nie odradza 
 //- koniec gry gdy zostanie 1 orzeł zywy
 
@@ -135,15 +132,11 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 	float velocity = 300 * deltaTime;
 
 	for (int i = 0; i < level.players.size(); i++)
-	{
 		playerPositions[i] = level.players[i].graphics.getPosition();
-	}
 		
 
 	for (int i = 0; i < level.eagles.size(); i++)
 		eaglePositions[i] = level.eagles[i].graphics.getPosition();
-
-		
 
 
 
@@ -164,7 +157,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 				}
 			}
 		}
-
+		
 		for (int i = 0; i < level.players.size(); i++)
 		{
 			for (int j = 0; j < level.concreteWalls.size(); j++)
@@ -367,9 +360,9 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		}
 		playerPositions[i].x += velocity;
 
-		if (playerPositions[i].x + level.players[0].graphics.getSize().x > VIEW_WIDTH - INGAMESTATS_WIDTH)
+		if (playerPositions[i].x + level.players[i].graphics.getSize().x > VIEW_WIDTH - INGAMESTATS_WIDTH)
 		{
-			playerPositions[i].x = VIEW_WIDTH - INGAMESTATS_WIDTH - level.players[0].graphics.getSize().x;
+			playerPositions[i].x = VIEW_WIDTH - INGAMESTATS_WIDTH - level.players[i].graphics.getSize().x;
 		}
 
 
@@ -440,14 +433,10 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 			for (int k = 0; k < level.players.size(); k++)
 			{
-				//tylko i wylacznie nastepny player moze zniszczyc poprzedni
 				if (bulletsColliding(bullet.shape, level.players[k].graphics) && i != k)
 				{
-					//level.players[k].graphics.setPosition(level.players[k]._startPos); 
 					playerPositions[k] = level.players[k]._startPos; 
 					level.players[k].graphics.setPosition(playerPositions[k]);
-					//level.players[1].graphics.setPosition(level.players[1]._startPos);
-					//level.players.erase(level.players.begin() + k);
 					bullets[i].erase(bullets[i].begin() + j);
 					j--;
 				}

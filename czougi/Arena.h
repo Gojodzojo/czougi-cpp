@@ -26,6 +26,7 @@ private:
 	sf::Vector2f eaglePositions[MAX_NUMBER_OF_PLAYERS];
 	sf::Vector2f bulletDirections[MAX_NUMBER_OF_PLAYERS];
 	std::vector<sf::RectangleShape > tanksInGame;
+	sf::Time elapsed = clock.getElapsedTime();
 	
 	
 
