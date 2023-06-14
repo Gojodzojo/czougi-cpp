@@ -2,9 +2,11 @@
 
 using namespace sf;
 
-Block::Block() : graphics(Vector2f(BLOCK_SIZE, BLOCK_SIZE))
-{
+const int BLOCK_SIZE = 30;
 
+Block::Block(Texture* texture) : graphics(*texture)
+{
+	graphics.setScale(TEXTURE_SCALE);
 }
 
 void Block::draw(sf::RenderWindow& window)
@@ -12,22 +14,18 @@ void Block::draw(sf::RenderWindow& window)
 	window.draw(graphics);
 }
 
-BrickWall::BrickWall()
+BrickWall::BrickWall() : Block(brickWallTexture)
 {
-	graphics.setFillColor(Color::Red);
 }
 
-ConcreteWall::ConcreteWall()
+ConcreteWall::ConcreteWall() : Block(concreteWallTexture)
 {
-	graphics.setFillColor(Color::White);
 }
 
-Water::Water()
+Water::Water() : Block(waterTexture)
 {
-	graphics.setFillColor(Color::Blue);
 }
 
-Leaves::Leaves()
+Leaves::Leaves() : Block(leavesTexture)
 {
-	graphics.setFillColor(Color::Green);
 }

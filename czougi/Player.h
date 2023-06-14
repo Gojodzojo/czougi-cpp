@@ -3,11 +3,20 @@
 #include "Keybindings.h"
 #include "Block.h"
 
+enum PlayerColor
+{
+	Yellow = 0,
+	Blue = 1,
+	Green = 2,
+	Red = 3
+};
+
 class Eagle
 {
 public:
-	Eagle(int playerNumber);
-	sf::RectangleShape graphics;
+	Eagle(PlayerColor);
+	sf::Sprite graphics;
+	bool isPresent;
 
 	void draw(sf::RenderWindow&);
 };
@@ -15,9 +24,10 @@ public:
 class Player
 {
 public:
-	Player(int playerNumber);
-	sf::RectangleShape graphics;
-	std::vector<Eagle> eagles;
+	Player(PlayerColor);
+	sf::Sprite graphics;
+	Eagle eagle;
+	PlayerColor playerColor;
 
 	void draw(sf::RenderWindow&);
 };

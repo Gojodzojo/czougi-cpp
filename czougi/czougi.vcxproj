@@ -86,6 +86,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -100,6 +101,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -114,6 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);SFML_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,6 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);SFML_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,14 +148,19 @@
     <ClCompile Include="Creators.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="font.cpp" />
+    <ClCompile Include="InvalidLevelPrompt.cpp" />
     <ClCompile Include="Keybindings.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelsList.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Prompt.cpp" />
+    <ClCompile Include="RenamePrompt.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="czougi.cpp" />
     <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="textures.cpp" />
+    <ClCompile Include="Tool.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="window.cpp" />
   </ItemGroup>
@@ -161,18 +170,37 @@
     <ClInclude Include="Creators.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="font.h" />
+    <ClInclude Include="InvalidLevelPrompt.h" />
     <ClInclude Include="Keybindings.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelsList.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Prompt.h" />
+    <ClInclude Include="RenamePrompt.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Settings.h" />
+    <ClInclude Include="textures.h" />
+    <ClInclude Include="Tool.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Roboto-Regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\blue-eagle.png" />
+    <Image Include="images\blue-tank.png" />
+    <Image Include="images\brick-wall.png" />
+    <Image Include="images\concrete-wall.png" />
+    <Image Include="images\green-eagle.png" />
+    <Image Include="images\green-tank.png" />
+    <Image Include="images\leaves.png" />
+    <Image Include="images\red-eagle.png" />
+    <Image Include="images\red-tank.png" />
+    <Image Include="images\water.png" />
+    <Image Include="images\yellow-eagle.png" />
+    <Image Include="images\yellow-tank.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -14,5 +14,7 @@ public:
 
 	// Funkcja w której rysowane s¹ obiekty przez dan¹ scenê
 	virtual void draw(sf::RenderWindow& window) = 0;
+
+	// virtual ~Scene() = default;
 };
 
