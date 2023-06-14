@@ -81,6 +81,102 @@ bool Level::canBeSaved()
 	return true;
 }
 
+Level::Level(const string& levelName) : name(levelName)
+{
+	ifstream file(getLevelPath(levelName));
+
+	int elementsNumber;
+	file >> elementsNumber;
+	players.reserve(elementsNumber);
+
+	for (int i = 0; i < elementsNumber; i++)
+	{
+		int playerColor;
+		file >> playerColor;
+		Player player((PlayerColor)playerColor);
+		
+		Vector2f playerPosition;
+		file >> playerPosition.x >> playerPosition.y;
+
+		Vector2f eaglePosition;
+		file >> eaglePosition.x >> eaglePosition.y;
+
+		playerPosition.x *= BLOCK_SIZE;
+		playerPosition.y *= BLOCK_SIZE;
+		eaglePosition.x *= BLOCK_SIZE;
+		eaglePosition.y *= BLOCK_SIZE;
+
+		player.graphics.setPosition(playerPosition);
+		player.eagle.graphics.setPosition(eaglePosition);
+		player.eagle.isPresent = true;
+		players.push_back(player);
+	}
+
+	file >> elementsNumber;
+	brickWalls.reserve(elementsNumber);
+
+	for (int i = 0; i < elementsNumber; i++)
+	{
+		Vector2f blockPosition;
+		file >> blockPosition.x >> blockPosition.y;
+
+		blockPosition.x *= BLOCK_SIZE;
+		blockPosition.y *= BLOCK_SIZE;
+
+		BrickWall block;
+		block.graphics.setPosition(blockPosition);
+		brickWalls.push_back(block);
+	}
+
+	file >> elementsNumber;
+	concreteWalls.reserve(elementsNumber);
+
+	for (int i = 0; i < elementsNumber; i++)
+	{
+		Vector2f blockPosition;
+		file >> blockPosition.x >> blockPosition.y;
+
+		blockPosition.x *= BLOCK_SIZE;
+		blockPosition.y *= BLOCK_SIZE;
+
+		ConcreteWall block;
+		block.graphics.setPosition(blockPosition);
+		concreteWalls.push_back(block);
+	}
+
+	file >> elementsNumber;
+	waters.reserve(elementsNumber);
+
+	for (int i = 0; i < elementsNumber; i++)
+	{
+		Vector2f blockPosition;
+		file >> blockPosition.x >> blockPosition.y;
+
+		blockPosition.x *= BLOCK_SIZE;
+		blockPosition.y *= BLOCK_SIZE;
+
+		Water block;
+		block.graphics.setPosition(blockPosition);
+		waters.push_back(block);
+	}
+
+	file >> elementsNumber;
+	leaves.reserve(elementsNumber);
+
+	for (int i = 0; i < elementsNumber; i++)
+	{
+		Vector2f blockPosition;
+		file >> blockPosition.x >> blockPosition.y;
+
+		blockPosition.x *= BLOCK_SIZE;
+		blockPosition.y *= BLOCK_SIZE;
+
+		Leaves block;
+		block.graphics.setPosition(blockPosition);
+		leaves.push_back(block);
+	}
+}
+
 void Level::save()
 {
 	ofstream file(getLevelPath(name));

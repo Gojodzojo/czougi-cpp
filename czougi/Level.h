@@ -28,6 +28,7 @@ public:
 	std::vector<Leaves> leaves;
 
 	Level();
+	Level(const std::string&);
 	bool isTileAvaliable(float, float);
 	bool canBeSaved();
 	void save();
