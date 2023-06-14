@@ -34,6 +34,7 @@ Eagle::Eagle(int playerNumber) : graphics(Vector2f(BLOCK_SIZE * 2, BLOCK_SIZE * 
 	graphics.setFillColor(playerColor);
 	_playerNumber = playerNumber;
 	_isAlive = 1;
+	_hasCollision = 1;
 }
 
 void Eagle::draw(RenderWindow& window)

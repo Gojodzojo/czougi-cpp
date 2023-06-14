@@ -13,10 +13,6 @@ const int INGAMESTATS_WIDTH = VIEW_WIDTH - VIEW_HEIGHT;  // obszar na statystki
 const int PLAYER_SIZE = 2 * BLOCK_SIZE - 5;
 
 
-//CO DO ZROBIENIA:
-//- jak dany orzel zginie, to czolg sie nie odradza 
-//- koniec gry gdy zostanie 1 orzeł zywy
-
 
 
 bool isColliding(Vector2f aPos, Vector2f aSize, Vector2f bPos, Vector2f bSize, float velocity, bool direction)
@@ -44,7 +40,6 @@ ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT))
 
 	vector <Bullet> bullets;
 	Vector2f bulletDirections; // domyślny kierunek pocisków
-	vector <RectangleShape> tanksInGame;
 
 	Player p1(0, Vector2f(700,700));
 	Player p2(1, Vector2f(200,200));
@@ -133,7 +128,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 	deltaTime = clock.getElapsedTime().asSeconds();
 	clock.restart();
-	float velocity = 300 * deltaTime;
+	float velocity = 150 * deltaTime;
 
 	for (int i = 0; i < level.players.size(); i++)
 		playerPositions[i] = level.players[i].graphics.getPosition();
@@ -142,7 +137,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 	for (int i = 0; i < level.eagles.size(); i++)
 		eaglePositions[i] = level.eagles[i].graphics.getPosition();
 
-
+	cout << deltaTime << endl;
 
 	for (int i = 0; i < level.players.size(); i++)
 	{	
@@ -192,7 +187,19 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 				}
 			}
 		}
+
+		for (int i = 0; i < level.players.size(); i++)
+		{
+			for (int j = 0; j < level.eagles.size(); j++)
+			{
+				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.eagles[j].graphics.getPosition(), level.eagles[j].graphics.getSize(), -velocity, 0) && level.eagles[j]._hasCollision)
+				{
+					playerPositions[i].y = level.eagles[j].graphics.getPosition().y + level.eagles[j].graphics.getSize().y + velocity;
+				}
+			}
+		}
 		playerPositions[i].y -= velocity;
+
 		if (playerPositions[i].y < 0)
 		{
 			playerPositions[i].y = 0;
@@ -245,6 +252,17 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 				{
 					playerPositions[i].x = level.players[j].graphics.getPosition().x + level.players[j].graphics.getSize().x + velocity;
 				}
+			}
+		}
+		for (int i = 0; i < level.players.size(); i++)
+		{
+			for (int j = 0; j < level.eagles.size(); j++)
+			{
+				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.eagles[j].graphics.getPosition(), level.eagles[j].graphics.getSize(), -velocity, 1) && level.eagles[j]._hasCollision)
+				{
+					playerPositions[i].x = level.eagles[j].graphics.getPosition().x + level.eagles[j].graphics.getSize().x + velocity;
+				}
+
 			}
 		}
 		playerPositions[i].x -= velocity;
@@ -305,6 +323,17 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 				}
 			}
 		}
+		for (int i = 0; i < level.players.size(); i++)
+		{
+			for (int j = 0; j < level.eagles.size(); j++)
+			{
+				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.eagles[j].graphics.getPosition(), level.eagles[j].graphics.getSize(), velocity, 0) && level.eagles[j]._hasCollision)
+				{
+					playerPositions[i].y = level.eagles[j].graphics.getPosition().y - level.players[i].graphics.getSize().y - velocity;
+				}
+
+			}
+		}
 		playerPositions[i].y += velocity;
 		if (playerPositions[i].y + level.players[i].graphics.getSize().y > VIEW_HEIGHT)
 		{
@@ -361,6 +390,18 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 				}
 			}
 		}
+
+		for (int i = 0; i < level.players.size(); i++)
+		{
+			for (int j = 0; j < level.eagles.size(); j++)
+			{
+				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.eagles[j].graphics.getPosition(), level.eagles[j].graphics.getSize(), velocity, 1) && level.eagles[j]._hasCollision)
+				{
+					playerPositions[i].x = level.eagles[j].graphics.getPosition().x - level.players[i].graphics.getSize().x - velocity;
+				}
+
+			}
+		}
 		playerPositions[i].x += velocity;
 
 		if (playerPositions[i].x + level.players[i].graphics.getSize().x > VIEW_WIDTH - INGAMESTATS_WIDTH)
@@ -371,8 +412,6 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 	}
 
-
-	//level.players[i].graphics.setPosition(playerPositions[i]);
 	
 	
 	int j = 0;
@@ -380,7 +419,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 	{
 		if (bullet.velocity.x == 0 && bullet.velocity.y == 0)
 		{
-			bullet.shape.move(10.0f, 0);     //aby ustawić pierwszy pocisk musze znac rotacje czolgu 
+			bullet.shape.move(10.0f, 0);     //aby ustawić pierwszy pocisk musze znac rotacje czolgu DO ZROBIENIA jak beda grafiki
 		}
 		else
 		{
@@ -452,7 +491,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		j++;
 		//j = który pocisk
 		//k =  ktory blok
-		//level.players[i]._playerNumber].
+		//level.players[i]._playerNumber = ktory gracz.
 	}
 		if (level.eagles[i]._isAlive == 1)
 		level.players[i]._timeSinceDeath += deltaTime;
@@ -461,34 +500,6 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 	int count = 0;
 	for (int i = 0; i < level.players.size(); i++)
 	{
-		//if (level.eagles[i]._isAlive == 0)
-		//	{
-		//		count++;
-		//		if (level.eagles.size() == 4)
-		//		{
-		//			if (count == 3)
-		//			{
-		//				if (level.eagles[0]._isAlive == 1)
-		//					cout << "Wygral gracz 1" << endl;
-		//				else if (level.eagles[1]._isAlive == 1)
-		//					cout << "Wygral gracz 2" << endl;
-		//				else if (level.eagles[2]._isAlive == 1)
-		//					cout << "Wygral gracz 3" << endl;
-		//				else if (level.eagles[3]._isAlive == 1)
-		//					cout << "Wygral gracz 4" << endl;
-		//			}
-		//		}
-		//		else if (level.eagles.size() == 2)
-		//		{
-		//				if (count == 1)
-		//				{
-		//					if (level.eagles[0]._isAlive == 1)
-		//						cout << "Wygral gracz 1" << endl;
-		//					else if (level.eagles[1]._isAlive == 1)
-		//						cout << "Wygral gracz 2" << endl;
-		//				}
-		//		}
-		//	}
 		if (level.players[i]._isAlive == 0)
 		{
 			count++;
@@ -513,8 +524,13 @@ void Arena::draw(sf::RenderWindow& window)
 		level.Waters[i].draw(window);
 	for (int i = 0; i < level.eagles.size(); i++)
 	{
-		if (level.eagles[i]._isAlive==1)
+		if (level.eagles[i]._isAlive == 1)
+		{
+			level.eagles[i]._hasCollision = 1;
 			level.eagles[i].draw(window);
+		}
+		else
+			level.eagles[i]._hasCollision = 0;
 	}
 
 	for (int i = 0; i < level.players.size(); i++)
@@ -532,8 +548,10 @@ void Arena::draw(sf::RenderWindow& window)
 		else
 		{
 			level.players[i]._hasCollision = 0;
-			if(level.eagles[i]._isAlive == 0)
+			if (level.eagles[i]._isAlive == 0)
+			{
 				level.players[i]._isAlive = 0;
+			}
 		}
 	}
 	for (int i = 0; i < level.brickWalls.size(); i++)

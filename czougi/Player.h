@@ -11,6 +11,7 @@ public:
 	sf::RectangleShape graphics;
 	void draw(sf::RenderWindow&);
 	bool _isAlive;
+	bool _hasCollision;
 	
 };
 
