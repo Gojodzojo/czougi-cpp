@@ -31,4 +31,5 @@ public:
 	bool isTileAvaliable(float, float);
 	bool canBeSaved();
 	void save();
+	void rename(const std::string&);
 };

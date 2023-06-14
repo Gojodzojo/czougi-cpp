@@ -11,6 +11,7 @@
 #include <memory>
 #include <iostream>
 #include "LevelsList.h"
+#include "RenamePrompt.h"
 
 class Editor :
 	public Scene
@@ -29,6 +30,7 @@ private:
 	sf::RectangleShape playIcon;
 	sf::RectangleShape saveIcon;
 	sf::RectangleShape deleteIcon;
+	RenamePrompt renamePrompt;
 
 public:
 	Editor(Level);

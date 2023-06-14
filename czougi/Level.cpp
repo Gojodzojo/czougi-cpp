@@ -57,6 +57,12 @@ Level::Level(): name("Nowy Poziom")
 	save();
 }
 
+void Level::rename(const string& newName)
+{
+	filesystem::rename(getLevelPath(name), getLevelPath(newName));
+	name = newName;
+}
+
 bool Level::canBeSaved()
 {
 	if (players.size() < 2)

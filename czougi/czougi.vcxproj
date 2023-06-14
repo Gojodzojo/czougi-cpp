@@ -153,6 +153,7 @@
     <ClCompile Include="LevelsList.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RenamePrompt.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="czougi.cpp" />
     <ClCompile Include="Settings.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="LevelsList.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RenamePrompt.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="textures.h" />

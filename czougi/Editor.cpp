@@ -18,6 +18,7 @@ const float FIRST_ROW_TOOL_ICON_Y = 180;
 
 Editor::Editor(Level level) : 
 	level(level),
+	renamePrompt(this->level),
 	toolbarBackground(Vector2f(TOOLBAR_WIDTH, VIEW_HEIGHT)),
 	playIcon(FILE_OPERATION_ICON_SIZE),
 	saveIcon(FILE_OPERATION_ICON_SIZE),
@@ -39,7 +40,8 @@ Editor::Editor(Level level) :
 		make_unique<EagleTool>(redEagleTexture, PlayerColor::Red),
 		make_unique<EraserTool>()
 	},
-	activeToolIndex(0)
+	activeToolIndex(0),
+	isSelecting(false)
 {
 	for (int i = 0; i < sizeof(tools) / sizeof(unique_ptr<Tool>); i++)
 	{
@@ -70,88 +72,101 @@ Editor::Editor(Level level) :
 
 Scene* Editor::processEvent(sf::RenderWindow& window, sf::Event& event)
 {
-	if (event.type == Event::MouseMoved)
+	if (renamePrompt.isOpened)
 	{
-		mousePosition = window.mapPixelToCoords(Vector2i(event.mouseMove.x, event.mouseMove.y));
-		
-		if (isSelecting)
+		renamePrompt.processEvent(window, event);
+		levelName.setString(level.name);
+		centerTextOrigin(levelName);
+	}
+	else
+	{
+		if (event.type == Event::MouseMoved)
 		{
-			if (mousePosition.x > VIEW_HEIGHT && mousePosition.x < 0 && mousePosition.y > VIEW_HEIGHT && mousePosition.y < 0)
+			mousePosition = window.mapPixelToCoords(Vector2i(event.mouseMove.x, event.mouseMove.y));
+
+			if (isSelecting)
 			{
-				isSelecting = false;
+				if (mousePosition.x > VIEW_HEIGHT && mousePosition.x < 0 && mousePosition.y > VIEW_HEIGHT && mousePosition.y < 0)
+				{
+					isSelecting = false;
+				}
+				else
+				{
+					Vector2f cursorPosition(((int)mousePosition.x / LEVEL_SIZE) * BLOCK_SIZE, ((int)mousePosition.y / LEVEL_SIZE) * BLOCK_SIZE);
+					Vector2f selectionRectanglePosition = selectionRectangle.getPosition();
+					Vector2f selectionRectangleSize = cursorPosition - selectionRectanglePosition;
+					Vector2f selectionRectangleOrigin(0, 0);
+
+					if (selectionRectangleSize.x >= 0)
+					{
+						selectionRectangleSize.x += BLOCK_SIZE;
+					}
+					else
+					{
+						selectionRectangleSize.x -= BLOCK_SIZE;
+						selectionRectangleOrigin.x -= BLOCK_SIZE;
+					}
+
+					if (selectionRectangleSize.y >= 0)
+					{
+						selectionRectangleSize.y += BLOCK_SIZE;
+					}
+					else
+					{
+						selectionRectangleSize.y -= BLOCK_SIZE;
+						selectionRectangleOrigin.y -= BLOCK_SIZE;
+					}
+
+					selectionRectangle.setOrigin(selectionRectangleOrigin);
+					selectionRectangle.setSize(selectionRectangleSize);
+				}
 			}
-			else
+		}
+		else if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left)
+		{
+			Vector2f mousePosition = window.mapPixelToCoords(Vector2i(event.mouseButton.x, event.mouseButton.y));
+
+			if (mousePosition.x > 0 && mousePosition.x < VIEW_HEIGHT && mousePosition.y > 0 && mousePosition.y < VIEW_HEIGHT)
 			{
 				Vector2f cursorPosition(((int)mousePosition.x / LEVEL_SIZE) * BLOCK_SIZE, ((int)mousePosition.y / LEVEL_SIZE) * BLOCK_SIZE);
 				Vector2f selectionRectanglePosition = selectionRectangle.getPosition();
-				Vector2f selectionRectangleSize = cursorPosition - selectionRectanglePosition;
-				Vector2f selectionRectangleOrigin(0, 0);
-
-				if (selectionRectangleSize.x >= 0)
-				{
-					selectionRectangleSize.x += BLOCK_SIZE;
-				}
-				else
-				{
-					selectionRectangleSize.x -= BLOCK_SIZE;
-					selectionRectangleOrigin.x -= BLOCK_SIZE;
-				}
-
-				if (selectionRectangleSize.y >= 0)
-				{
-					selectionRectangleSize.y += BLOCK_SIZE;
-				}
-				else
-				{
-					selectionRectangleSize.y -= BLOCK_SIZE;
-					selectionRectangleOrigin.y -= BLOCK_SIZE;
-				}
-				
-				selectionRectangle.setOrigin(selectionRectangleOrigin);
-				selectionRectangle.setSize(selectionRectangleSize);
+				tools[activeToolIndex]->performAction(cursorPosition, selectionRectanglePosition, level);
 			}
-		}
-	}
-	else if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left)
-	{
-		Vector2f mousePosition = window.mapPixelToCoords(Vector2i(event.mouseButton.x, event.mouseButton.y));
+			else
+			{
+				if (isHovered(saveIcon.getGlobalBounds(), mousePosition) && level.canBeSaved())
+				{
+					level.save();
+					return new LevelsList;
+				}
+				else if (isHovered(levelName.getGlobalBounds(), mousePosition))
+				{
+					renamePrompt.isOpened = true;
+				}
 
-		if (mousePosition.x > 0 && mousePosition.x < VIEW_HEIGHT && mousePosition.y > 0 && mousePosition.y < VIEW_HEIGHT)
+				for (int i = 0; i < sizeof(tools) / sizeof(unique_ptr<Tool>); i++)
+				{
+					if (tools[i]->isHovered(mousePosition))
+					{
+						activeToolIndex = i;
+					}
+				}
+			}
+
+			isSelecting = false;
+		}
+		else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left && tools[activeToolIndex]->isSelectable &&
+			mousePosition.x > 0 && mousePosition.x < VIEW_HEIGHT && mousePosition.y > 0 && mousePosition.y < VIEW_HEIGHT)
 		{
+			Vector2f mousePosition = window.mapPixelToCoords(Vector2i(event.mouseButton.x, event.mouseButton.y));
+
 			Vector2f cursorPosition(((int)mousePosition.x / LEVEL_SIZE) * BLOCK_SIZE, ((int)mousePosition.y / LEVEL_SIZE) * BLOCK_SIZE);
-			Vector2f selectionRectanglePosition = selectionRectangle.getPosition();
-			tools[activeToolIndex]->performAction(cursorPosition, selectionRectanglePosition, level);
+			selectionRectangle.setPosition(cursorPosition);
+			selectionRectangle.setSize(Vector2f(BLOCK_SIZE, BLOCK_SIZE));
+			selectionRectangle.setOrigin(0, 0);
+			selectionRectangle.setFillColor(tools[activeToolIndex]->selectionColor);
+			isSelecting = true;
 		}
-		else
-		{
-			for (int i = 0; i < sizeof(tools) / sizeof(unique_ptr<Tool>); i++)
-			{
-				if (tools[i]->isHovered(mousePosition))
-				{
-					activeToolIndex = i;
-				}
-			}
-
-			if (isHovered(saveIcon.getGlobalBounds(), mousePosition) && level.canBeSaved())
-			{
-				level.save();
-				return new LevelsList;
-			}
-		}
-
-		isSelecting = false;
-	}
-	else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left && tools[activeToolIndex]->isSelectable &&
-		mousePosition.x > 0 && mousePosition.x < VIEW_HEIGHT && mousePosition.y > 0 && mousePosition.y < VIEW_HEIGHT)
-	{
-		Vector2f mousePosition = window.mapPixelToCoords(Vector2i(event.mouseButton.x, event.mouseButton.y));
-	
-		Vector2f cursorPosition(((int)mousePosition.x / LEVEL_SIZE) * BLOCK_SIZE, ((int)mousePosition.y / LEVEL_SIZE) * BLOCK_SIZE);
-		selectionRectangle.setPosition(cursorPosition);
-		selectionRectangle.setSize(Vector2f(BLOCK_SIZE, BLOCK_SIZE));
-		selectionRectangle.setOrigin(0, 0);
-		selectionRectangle.setFillColor(tools[activeToolIndex]->selectionColor);
-		isSelecting = true;
 	}
 
 	return nullptr;
@@ -218,22 +233,30 @@ void Editor::draw(sf::RenderWindow& window)
 		}
 	}
 
-	if (mousePosition.x > 0 && mousePosition.x < VIEW_HEIGHT && mousePosition.y > 0 && mousePosition.y < VIEW_HEIGHT)
+	if (renamePrompt.isOpened)
 	{
-		window.setMouseCursorVisible(false);
-
-		if (isSelecting)
-		{
-			window.draw(selectionRectangle);
-		}
-		else
-		{
-			Vector2f cursorPosition(((int)mousePosition.x / LEVEL_SIZE) * BLOCK_SIZE, ((int)mousePosition.y / LEVEL_SIZE) * BLOCK_SIZE);
-			tools[activeToolIndex]->drawAsCursor(window, cursorPosition);
-		}
+		window.setMouseCursorVisible(true);
+		renamePrompt.draw(window);
 	}
 	else
 	{
-		window.setMouseCursorVisible(true);
+		if (mousePosition.x > 0 && mousePosition.x < VIEW_HEIGHT && mousePosition.y > 0 && mousePosition.y < VIEW_HEIGHT)
+		{
+			window.setMouseCursorVisible(false);
+
+			if (isSelecting)
+			{
+				window.draw(selectionRectangle);
+			}
+			else
+			{
+				Vector2f cursorPosition(((int)mousePosition.x / LEVEL_SIZE) * BLOCK_SIZE, ((int)mousePosition.y / LEVEL_SIZE) * BLOCK_SIZE);
+				tools[activeToolIndex]->drawAsCursor(window, cursorPosition);
+			}
+		}
+		else
+		{
+			window.setMouseCursorVisible(true);
+		}
 	}
 }
