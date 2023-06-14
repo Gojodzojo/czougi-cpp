@@ -4,18 +4,15 @@
 #include "Menu.h"
 #include "Player.h"
 #include "Eagles.h"
-#include<vector>
+#include <vector>
 
 using namespace sf;
 using namespace std;
 
 const int INGAMESTATS_WIDTH = VIEW_WIDTH - VIEW_HEIGHT;  // obszar na statystki
-const int PLAYER_SIZE = 2 * BLOCK_SIZE - 5;
 
 
-
-
-bool isColliding(Vector2f aPos, Vector2f aSize, Vector2f bPos, Vector2f bSize, float velocity, bool direction)
+bool isColliding(const Vector2f& aPos, const Vector2f& aSize, const Vector2f& bPos, const Vector2f& bSize, float velocity, bool direction)
 {
 	if (direction)
 		return aPos.x + velocity < bPos.x + bSize.x && aPos.x + aSize.x + velocity > bPos.x && aPos.y < bPos.y + bSize.y && aPos.y + aSize.y > bPos.y;
@@ -24,10 +21,10 @@ bool isColliding(Vector2f aPos, Vector2f aSize, Vector2f bPos, Vector2f bSize, f
 }
 
 
-bool bulletsColliding(RectangleShape bullet, RectangleShape block)
+bool bulletsColliding(const RectangleShape& bullet, const Vector2f& blockPosition, const Vector2f& blockSize)
 {
 	FloatRect bounds1 = bullet.getGlobalBounds();
-	FloatRect bounds2 = block.getGlobalBounds();
+	FloatRect bounds2 = FloatRect(blockPosition, blockSize);
 	return bounds1.intersects(bounds2);  //true jak sie nakladaja
  }
 
@@ -41,65 +38,11 @@ ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT))
 	vector <Bullet> bullets;
 	Vector2f bulletDirections; // domyślny kierunek pocisków
 
-	Player p1(0, Vector2f(700,700));
-	Player p2(1, Vector2f(200,200));
-	Player p3(2, Vector2f(500, 500));
-	Player p4(3, Vector2f(50, 550));
-
-	p1.graphics.setPosition(p1._startPos);
-	p2.graphics.setPosition(p2._startPos);
-	p3.graphics.setPosition(p3._startPos);
-	p4.graphics.setPosition(p4._startPos);
-
-	level.players.push_back(p1);
-	level.players.push_back(p2);
-	level.players.push_back(p3);
-	level.players.push_back(p4);
-
-	Eagle e1(0);
-	Eagle e2(1);
-	Eagle e3(2);
-	Eagle e4(3);
-	e1.graphics.setPosition(800, 800);
-	e2.graphics.setPosition(100, 100);
-	e3.graphics.setPosition(100, 800);
-	e4.graphics.setPosition(800, 100);
-	level.eagles.push_back(e1);
-	level.eagles.push_back(e2);
-	level.eagles.push_back(e3);
-	level.eagles.push_back(e4);
-
 	
 	for (int i = 0; i < level.players.size(); i++)
 	{
 		level.players[i]._timeSinceDeath = 3.5;
 	}
-	
-
-	BrickWall bw;
-	bw.graphics.setPosition(300, 800);
-	level.brickWalls.push_back(bw);
-	BrickWall bw1;
-	bw1.graphics.setPosition(400, 800);
-	level.brickWalls.push_back(bw1);
-	ConcreteWall cw;
-	cw.graphics.setPosition(300, 600);
-	level.concreteWalls.push_back(cw);
-	ConcreteWall cw1;
-	cw1.graphics.setPosition(400, 600);
-	level.concreteWalls.push_back(cw1);
-	Water w;
-	w.graphics.setPosition(300, 400);
-	level.Waters.push_back(w);
-	Water w1;
-	w1.graphics.setPosition(400, 400);
-	level.Waters.push_back(w1);
-	Leaves l;
-	l.graphics.setPosition(300, 200);
-	level.leaves.push_back(l);
-	Leaves l1;
-	l1.graphics.setPosition(400, 200);
-	level.leaves.push_back(l1);
 }
 
 Scene* Arena::processEvent(sf::RenderWindow& window, sf::Event& event)
@@ -109,10 +52,10 @@ Scene* Arena::processEvent(sf::RenderWindow& window, sf::Event& event)
 	{
 		if (shootTimer[i] != 15)
 			shootTimer[i]++;
-		if (Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].shot) && shootTimer[i] == 15 && level.players[i]._timeSinceDeath >= 3.5)
+		if (Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].shot) && shootTimer[i] == 15 && level.players[i]._timeSinceDeath >= 3.5)
 		{
-			Vector2f bulletStartPos(level.players[i].graphics.getPosition().x + level.players[i].graphics.getSize().x / 2 - BulletSize / 2,
-				level.players[i].graphics.getPosition().y + level.players[i].graphics.getSize().y / 2 - BulletSize / 2);  // ustawienie pocisków na środku
+			Vector2f bulletStartPos(level.players[i].graphics.getPosition().x + PLAYER_SIZE / 2 - BulletSize / 2,
+				level.players[i].graphics.getPosition().y + PLAYER_SIZE / 2 - BulletSize / 2);  // ustawienie pocisków na środku
 			shootTimer[i] = 0;
 			bullets[i].emplace_back(bulletStartPos, bulletDirections[i]);  //trzymanie w tablicy pozycji startowej i kierunku
 		}
@@ -131,27 +74,26 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 	float velocity = 150 * deltaTime;
 
 	for (int i = 0; i < level.players.size(); i++)
+	{
 		playerPositions[i] = level.players[i].graphics.getPosition();
-		
-
-	for (int i = 0; i < level.eagles.size(); i++)
-		eaglePositions[i] = level.eagles[i].graphics.getPosition();
+		eaglePositions[i] = level.players[i].eagle.graphics.getPosition();
+	}
 
 	cout << deltaTime << endl;
 
 	for (int i = 0; i < level.players.size(); i++)
 	{	
 
-	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].up) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].down) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].right) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].left) && level.players[i]._timeSinceDeath >= 3.5)
+	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].up) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].down) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].right) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].left) && level.players[i]._timeSinceDeath >= 3.5)
 	{
 		bulletDirections[i] = Vector2f(0.0f, -1.0f);
 		for (int i = 0; i < level.players.size(); i++)
 		{
 			for (int j = 0; j < level.brickWalls.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.brickWalls[j].graphics.getPosition(), level.brickWalls[j].graphics.getSize(), -velocity, 0))
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.brickWalls[j].graphics.getPosition(), BLOCK_SIZE_VEC, -velocity, 0))
 				{
-					playerPositions[i].y = level.brickWalls[j].graphics.getPosition().y + level.brickWalls[j].graphics.getSize().y + velocity;
+					playerPositions[i].y = level.brickWalls[j].graphics.getPosition().y + BLOCK_SIZE + velocity;
 				}
 			}
 		}
@@ -160,19 +102,19 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		{
 			for (int j = 0; j < level.concreteWalls.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.concreteWalls[j].graphics.getPosition(), level.concreteWalls[j].graphics.getSize(), -velocity, 0))
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.concreteWalls[j].graphics.getPosition(), BLOCK_SIZE_VEC, -velocity, 0))
 				{
-					playerPositions[i].y = level.concreteWalls[j].graphics.getPosition().y + level.concreteWalls[j].graphics.getSize().y + velocity;
+					playerPositions[i].y = level.concreteWalls[j].graphics.getPosition().y + BLOCK_SIZE + velocity;
 				}
 			}
 		}
 		for (int i = 0; i < level.players.size(); i++)
 		{
-			for (int j = 0; j < level.Waters.size(); j++)
+			for (int j = 0; j < level.waters.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.Waters[j].graphics.getPosition(), level.Waters[j].graphics.getSize(), -velocity, 0))
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.waters[j].graphics.getPosition(), BLOCK_SIZE_VEC, -velocity, 0))
 				{
-					playerPositions[i].y = level.Waters[j].graphics.getPosition().y + level.Waters[j].graphics.getSize().y + velocity;
+					playerPositions[i].y = level.waters[j].graphics.getPosition().y + BLOCK_SIZE + velocity;
 				}
 			}
 		}
@@ -181,20 +123,20 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 			for (int j = 0; j < level.players.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.players[j].graphics.getPosition(), level.players[j].graphics.getSize(), -velocity, 0) && i != j && level.players[j]._hasCollision)
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.players[j].graphics.getPosition(), BLOCK_SIZE_VEC, -velocity, 0) && i != j && level.players[j]._hasCollision)
 				{
-					playerPositions[i].y = level.players[j].graphics.getPosition().y + level.players[j].graphics.getSize().y + velocity;
+					playerPositions[i].y = level.players[j].graphics.getPosition().y + BLOCK_SIZE_VEC.y + velocity;
 				}
 			}
 		}
 
 		for (int i = 0; i < level.players.size(); i++)
 		{
-			for (int j = 0; j < level.eagles.size(); j++)
+			for (int j = 0; j < level.players.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.eagles[j].graphics.getPosition(), level.eagles[j].graphics.getSize(), -velocity, 0) && level.eagles[j]._hasCollision)
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.players[j].eagle.graphics.getPosition(), EAGLE_SIZE_VEC, -velocity, 0) && level.players[j].eagle._hasCollision)
 				{
-					playerPositions[i].y = level.eagles[j].graphics.getPosition().y + level.eagles[j].graphics.getSize().y + velocity;
+					playerPositions[i].y = level.players[j].eagle.graphics.getPosition().y + EAGLE_SIZE + velocity;
 				}
 			}
 		}
@@ -206,7 +148,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		}
 		level.players[i].graphics.setPosition(playerPositions[i]);
 	}
-	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].left) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].right) && level.players[i]._timeSinceDeath >= 3.5)
+	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].left) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].right) && level.players[i]._timeSinceDeath >= 3.5)
 	{
 		bulletDirections[i] = Vector2f(-1.0f, 0.0f);
 
@@ -214,9 +156,9 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		{
 			for (int j = 0; j < level.brickWalls.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.brickWalls[j].graphics.getPosition(), level.brickWalls[j].graphics.getSize(), -velocity, 1))
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.brickWalls[j].graphics.getPosition(), BLOCK_SIZE_VEC, -velocity, 1))
 				{
-					playerPositions[i].x = level.brickWalls[j].graphics.getPosition().x + level.brickWalls[j].graphics.getSize().x + velocity;
+					playerPositions[i].x = level.brickWalls[j].graphics.getPosition().x + BLOCK_SIZE_VEC.x + velocity;
 				}
 
 			}
@@ -225,20 +167,20 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		{
 			for (int j = 0; j < level.concreteWalls.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.concreteWalls[j].graphics.getPosition(), level.concreteWalls[j].graphics.getSize(), -velocity, 1))
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.concreteWalls[j].graphics.getPosition(), BLOCK_SIZE_VEC, -velocity, 1))
 				{
-					playerPositions[i].x = level.concreteWalls[j].graphics.getPosition().x + level.concreteWalls[j].graphics.getSize().x + velocity;
+					playerPositions[i].x = level.concreteWalls[j].graphics.getPosition().x + BLOCK_SIZE_VEC.x + velocity;
 				}
 
 			}
 		}
 		for (int i = 0; i < level.players.size(); i++)
 		{
-			for (int j = 0; j < level.Waters.size(); j++)
+			for (int j = 0; j < level.waters.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.Waters[j].graphics.getPosition(), level.Waters[j].graphics.getSize(), -velocity, 1))
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.waters[j].graphics.getPosition(), BLOCK_SIZE_VEC, -velocity, 1))
 				{
-					playerPositions[i].x = level.Waters[j].graphics.getPosition().x + level.Waters[j].graphics.getSize().x + velocity;
+					playerPositions[i].x = level.waters[j].graphics.getPosition().x + BLOCK_SIZE_VEC.x + velocity;
 				}
 
 			}
@@ -248,19 +190,19 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 			for (int j = 0; j < level.players.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.players[j].graphics.getPosition(), level.players[j].graphics.getSize(), -velocity, 1) && i != j && level.players[j]._hasCollision)
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.players[j].graphics.getPosition(), BLOCK_SIZE_VEC, -velocity, 1) && i != j && level.players[j]._hasCollision)
 				{
-					playerPositions[i].x = level.players[j].graphics.getPosition().x + level.players[j].graphics.getSize().x + velocity;
+					playerPositions[i].x = level.players[j].graphics.getPosition().x + BLOCK_SIZE_VEC.x + velocity;
 				}
 			}
 		}
 		for (int i = 0; i < level.players.size(); i++)
 		{
-			for (int j = 0; j < level.eagles.size(); j++)
+			for (int j = 0; j < level.players.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.eagles[j].graphics.getPosition(), level.eagles[j].graphics.getSize(), -velocity, 1) && level.eagles[j]._hasCollision)
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.players[j].eagle.graphics.getPosition(), EAGLE_SIZE_VEC, -velocity, 1) && level.players[j].eagle._hasCollision)
 				{
-					playerPositions[i].x = level.eagles[j].graphics.getPosition().x + level.eagles[j].graphics.getSize().x + velocity;
+					playerPositions[i].x = level.players[j].eagle.graphics.getPosition().x + EAGLE_SIZE + velocity;
 				}
 
 			}
@@ -274,7 +216,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		level.players[i].graphics.setPosition(playerPositions[i]);
 	}
 
-	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].down) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].right) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].left) && level.players[i]._timeSinceDeath >= 3.5 )
+	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].down) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].right) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].left) && level.players[i]._timeSinceDeath >= 3.5 )
 	{
 		bulletDirections[i] = Vector2f(0.0f, 1.0f);
 
@@ -283,9 +225,9 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		{
 			for (int j = 0; j < level.brickWalls.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.brickWalls[j].graphics.getPosition(), level.brickWalls[j].graphics.getSize(), velocity, 0))
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.brickWalls[j].graphics.getPosition(), BLOCK_SIZE_VEC, velocity, 0))
 				{
-					playerPositions[i].y = level.brickWalls[j].graphics.getPosition().y - level.players[i].graphics.getSize().y - velocity;
+					playerPositions[i].y = level.brickWalls[j].graphics.getPosition().y - PLAYER_SIZE_VEC.y - velocity;
 				}
 
 			}
@@ -294,20 +236,20 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		{
 			for (int j = 0; j < level.concreteWalls.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.concreteWalls[j].graphics.getPosition(), level.concreteWalls[j].graphics.getSize(), velocity, 0))
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.concreteWalls[j].graphics.getPosition(), BLOCK_SIZE_VEC, velocity, 0))
 				{
-					playerPositions[i].y = level.concreteWalls[j].graphics.getPosition().y - level.players[i].graphics.getSize().y - velocity;
+					playerPositions[i].y = level.concreteWalls[j].graphics.getPosition().y - PLAYER_SIZE_VEC.y - velocity;
 				}
 
 			}
 		}
 		for (int i = 0; i < level.players.size(); i++)
 		{
-			for (int j = 0; j < level.Waters.size(); j++)
+			for (int j = 0; j < level.waters.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.Waters[j].graphics.getPosition(), level.Waters[j].graphics.getSize(), velocity, 0))
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.waters[j].graphics.getPosition(), BLOCK_SIZE_VEC, velocity, 0))
 				{
-					playerPositions[i].y = level.Waters[j].graphics.getPosition().y - level.players[i].graphics.getSize().y - velocity;
+					playerPositions[i].y = level.waters[j].graphics.getPosition().y - PLAYER_SIZE_VEC.y - velocity;
 				}
 
 			}
@@ -317,32 +259,32 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 			for (int j = 0; j < level.players.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.players[j].graphics.getPosition(), level.players[j].graphics.getSize(), velocity, 0) && i != j && level.players[j]._hasCollision)
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.players[j].graphics.getPosition(), BLOCK_SIZE_VEC, velocity, 0) && i != j && level.players[j]._hasCollision)
 				{
-					playerPositions[i].y = level.players[j].graphics.getPosition().y - level.players[i].graphics.getSize().y - velocity;
+					playerPositions[i].y = level.players[j].graphics.getPosition().y - PLAYER_SIZE_VEC.y - velocity;
 				}
 			}
 		}
 		for (int i = 0; i < level.players.size(); i++)
 		{
-			for (int j = 0; j < level.eagles.size(); j++)
+			for (int j = 0; j < level.players.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.eagles[j].graphics.getPosition(), level.eagles[j].graphics.getSize(), velocity, 0) && level.eagles[j]._hasCollision)
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.players[j].eagle.graphics.getPosition(), EAGLE_SIZE_VEC, velocity, 0) && level.players[j].eagle._hasCollision)
 				{
-					playerPositions[i].y = level.eagles[j].graphics.getPosition().y - level.players[i].graphics.getSize().y - velocity;
+					playerPositions[i].y = level.players[j].eagle.graphics.getPosition().y - PLAYER_SIZE_VEC.y - velocity;
 				}
 
 			}
 		}
 		playerPositions[i].y += velocity;
-		if (playerPositions[i].y + level.players[i].graphics.getSize().y > VIEW_HEIGHT)
+		if (playerPositions[i].y + PLAYER_SIZE_VEC.y > VIEW_HEIGHT)
 		{
-			playerPositions[i].y = VIEW_HEIGHT - level.players[i].graphics.getSize().y;
+			playerPositions[i].y = VIEW_HEIGHT - PLAYER_SIZE_VEC.y;
 		}
 		level.players[i].graphics.setPosition(playerPositions[i]);
 	}
 
-	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].right) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i]._playerNumber].left) && level.players[i]._timeSinceDeath >= 3.5)
+	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].right) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].left) && level.players[i]._timeSinceDeath >= 3.5)
 	{
 		bulletDirections[i] = Vector2f(1.0f, 0.0f);
 
@@ -350,9 +292,9 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		{
 			for (int j = 0; j < level.brickWalls.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.brickWalls[j].graphics.getPosition(), level.brickWalls[j].graphics.getSize(), velocity, 1))
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.brickWalls[j].graphics.getPosition(), BLOCK_SIZE_VEC, velocity, 1))
 				{
-					playerPositions[i].x = level.brickWalls[j].graphics.getPosition().x - level.players[i].graphics.getSize().x - velocity;
+					playerPositions[i].x = level.brickWalls[j].graphics.getPosition().x - PLAYER_SIZE_VEC.x - velocity;
 				}
 
 			}
@@ -361,20 +303,20 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		{
 			for (int j = 0; j < level.concreteWalls.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.concreteWalls[j].graphics.getPosition(), level.concreteWalls[j].graphics.getSize(), velocity, 1))
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.concreteWalls[j].graphics.getPosition(), BLOCK_SIZE_VEC, velocity, 1))
 				{
-					playerPositions[i].x = level.concreteWalls[j].graphics.getPosition().x - level.players[i].graphics.getSize().x - velocity;
+					playerPositions[i].x = level.concreteWalls[j].graphics.getPosition().x - PLAYER_SIZE_VEC.x - velocity;
 				}
 
 			}
 		}
 		for (int i = 0; i < level.players.size(); i++)
 		{
-			for (int j = 0; j < level.Waters.size(); j++)
+			for (int j = 0; j < level.waters.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.Waters[j].graphics.getPosition(), level.Waters[j].graphics.getSize(), velocity, 1))
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.waters[j].graphics.getPosition(), BLOCK_SIZE_VEC, velocity, 1))
 				{
-					playerPositions[i].x = level.Waters[j].graphics.getPosition().x - level.players[i].graphics.getSize().x - velocity;
+					playerPositions[i].x = level.waters[j].graphics.getPosition().x - PLAYER_SIZE_VEC.x - velocity;
 				}
 
 			}
@@ -384,29 +326,29 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 			for (int j = 0; j < level.players.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.players[j].graphics.getPosition(), level.players[j].graphics.getSize(), velocity, 1) && i != j && level.players[j]._hasCollision)
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.players[j].graphics.getPosition(), BLOCK_SIZE_VEC, velocity, 1) && i != j && level.players[j]._hasCollision)
 				{
-					playerPositions[i].x = level.players[j].graphics.getPosition().x - level.players[i].graphics.getSize().x - velocity;
+					playerPositions[i].x = level.players[j].graphics.getPosition().x - PLAYER_SIZE_VEC.x - velocity;
 				}
 			}
 		}
 
 		for (int i = 0; i < level.players.size(); i++)
 		{
-			for (int j = 0; j < level.eagles.size(); j++)
+			for (int j = 0; j < level.players.size(); j++)
 			{
-				if (isColliding(level.players[i].graphics.getPosition(), level.players[i].graphics.getSize(), level.eagles[j].graphics.getPosition(), level.eagles[j].graphics.getSize(), velocity, 1) && level.eagles[j]._hasCollision)
+				if (isColliding(level.players[i].graphics.getPosition(), PLAYER_SIZE_VEC, level.players[j].eagle.graphics.getPosition(), EAGLE_SIZE_VEC, velocity, 1) && level.players[j].eagle._hasCollision)
 				{
-					playerPositions[i].x = level.eagles[j].graphics.getPosition().x - level.players[i].graphics.getSize().x - velocity;
+					playerPositions[i].x = level.players[j].eagle.graphics.getPosition().x - PLAYER_SIZE_VEC.x - velocity;
 				}
 
 			}
 		}
 		playerPositions[i].x += velocity;
 
-		if (playerPositions[i].x + level.players[i].graphics.getSize().x > VIEW_WIDTH - INGAMESTATS_WIDTH)
+		if (playerPositions[i].x + PLAYER_SIZE_VEC.x > VIEW_WIDTH - INGAMESTATS_WIDTH)
 		{
-			playerPositions[i].x = VIEW_WIDTH - INGAMESTATS_WIDTH - level.players[i].graphics.getSize().x;
+			playerPositions[i].x = VIEW_WIDTH - INGAMESTATS_WIDTH - PLAYER_SIZE_VEC.x;
 		}
 		level.players[i].graphics.setPosition(playerPositions[i]);
 
@@ -436,26 +378,24 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		}
 		else 
 		{
-			for (int k = 0; k < level.eagles.size(); k++)
+			for (int k = 0; k < level.players.size(); k++)
 			{
-				if (bulletsColliding(bullet.shape, level.eagles[k].graphics))
+				if (bulletsColliding(bullet.shape, level.players[k].eagle.graphics.getPosition(), EAGLE_SIZE_VEC))
 				{
-					if (level.eagles[k]._isAlive)
+					if (level.players[k].eagle._isAlive)
 					{
 						bullets[i].erase(bullets[i].begin() + j);
 						j--;
 					}
-					if (level.players[i]._playerNumber != level.eagles[k]._playerNumber)
+					if (level.players[i].playerColor != level.players[k].playerColor)
 					{
-						level.eagles[k]._isAlive = 0;
+						level.players[k].eagle._isAlive = 0;
 					}
-				
-
 				}
 			}
 			for (int k = 0; k < level.brickWalls.size(); k++)
 			{
-				if (bulletsColliding(bullet.shape, level.brickWalls[k].graphics))
+				if (bulletsColliding(bullet.shape, level.brickWalls[k].graphics.getPosition(), BLOCK_SIZE_VEC))
 				{
 					level.brickWalls.erase(level.brickWalls.begin() + k);
 					bullets[i].erase(bullets[i].begin() + j);
@@ -466,7 +406,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 			for (int k = 0; k < level.concreteWalls.size(); k++)
 			{
-				if (bulletsColliding(bullet.shape, level.concreteWalls[k].graphics))
+				if (bulletsColliding(bullet.shape, level.concreteWalls[k].graphics.getPosition(), BLOCK_SIZE_VEC))
 				{
 					bullets[i].erase(bullets[i].begin() + j);
 					j--;   
@@ -474,11 +414,9 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 			}
 
-
-
 			for (int k = 0; k < level.players.size(); k++)
 			{
-				if (bulletsColliding(bullet.shape, level.players[k].graphics) && i != k && level.players[k]._timeSinceDeath >= 3.5)
+				if (bulletsColliding(bullet.shape, level.players[k].graphics.getPosition(), PLAYER_SIZE_VEC) && i != k && level.players[k]._timeSinceDeath >= 3.5)
 				{
 					level.players[k]._timeSinceDeath = 0;
 					bullets[i].erase(bullets[i].begin() + j);
@@ -491,9 +429,9 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		j++;
 		//j = który pocisk
 		//k =  ktory blok
-		//level.players[i]._playerNumber = ktory gracz.
+		//level.players[i].playerColor = ktory gracz.
 	}
-		if (level.eagles[i]._isAlive == 1)
+		if (level.players[i].eagle._isAlive == 1)
 		level.players[i]._timeSinceDeath += deltaTime;
 
 	}
@@ -520,17 +458,17 @@ void Arena::draw(sf::RenderWindow& window)
 {
 	window.draw(ingameStats);
 
-	for (int i = 0; i < level.Waters.size(); i++)
-		level.Waters[i].draw(window);
-	for (int i = 0; i < level.eagles.size(); i++)
+	for (int i = 0; i < level.waters.size(); i++)
+		level.waters[i].draw(window);
+	for (int i = 0; i < level.players.size(); i++)
 	{
-		if (level.eagles[i]._isAlive == 1)
+		if (level.players[i].eagle._isAlive == 1)
 		{
-			level.eagles[i]._hasCollision = 1;
-			level.eagles[i].draw(window);
+			level.players[i].eagle._hasCollision = 1;
+			level.players[i].eagle.draw(window);
 		}
 		else
-			level.eagles[i]._hasCollision = 0;
+			level.players[i].eagle._hasCollision = 0;
 	}
 
 	for (int i = 0; i < level.players.size(); i++)
@@ -548,7 +486,7 @@ void Arena::draw(sf::RenderWindow& window)
 		else
 		{
 			level.players[i]._hasCollision = 0;
-			if (level.eagles[i]._isAlive == 0)
+			if (level.players[i].eagle._isAlive == 0)
 			{
 				level.players[i]._isAlive = 0;
 			}

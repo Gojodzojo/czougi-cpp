@@ -11,30 +11,18 @@ Menu::Menu()
 	// Skopiuj ustatienia levelsText do innych textów
 	settingsText = levelsListText;
 	creatorsText = levelsListText;
-	editorText = levelsListText;
-	arenaText = levelsListText;
-
-	float halfOfWidth = (float)VIEW_WIDTH / 2.0;
 
 	levelsListText.setString("Poziomy");
 	centerTextOrigin(levelsListText);
-	levelsListText.setPosition(halfOfWidth, 100);
+	levelsListText.setPosition(VIEW_CENTER_X, 100);
 
 	settingsText.setString("Ustawienia");
 	centerTextOrigin(settingsText);
-	settingsText.setPosition(halfOfWidth, 200);
+	settingsText.setPosition(VIEW_CENTER_X, 200);
 
 	creatorsText.setString("Twórcy");
 	centerTextOrigin(creatorsText);
-	creatorsText.setPosition(halfOfWidth, 300);
-
-	editorText.setString("Edytor poziomów");
-	centerTextOrigin(editorText);
-	editorText.setPosition(halfOfWidth, 400);
-
-	arenaText.setString("Arena");
-	centerTextOrigin(arenaText);
-	arenaText.setPosition(halfOfWidth, 500);
+	creatorsText.setPosition(VIEW_CENTER_X, 300);
 }
 
 Scene* Menu::processEvent(sf::RenderWindow& window, sf::Event& event)
@@ -51,12 +39,6 @@ Scene* Menu::processEvent(sf::RenderWindow& window, sf::Event& event)
 
 			if (isHovered(creatorsText.getGlobalBounds(), mousePosition))
 				return new Creators();
-
-			if (isHovered(editorText.getGlobalBounds(), mousePosition))
-				return new Editor(Level());
-
-			if (isHovered(arenaText.getGlobalBounds(), mousePosition))
-				return new Arena(Level());
 	}
 
 	return nullptr;
@@ -72,6 +54,4 @@ void Menu::draw(sf::RenderWindow& window)
 	window.draw(levelsListText);
 	window.draw(settingsText);
 	window.draw(creatorsText);
-	window.draw(editorText);
-	window.draw(arenaText);
 }

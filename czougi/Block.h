@@ -1,13 +1,15 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "textures.h"
 
-const int BLOCK_SIZE = 30;
+extern const int BLOCK_SIZE;
+const sf::Vector2f BLOCK_SIZE_VEC(BLOCK_SIZE, BLOCK_SIZE);
 
 class Block
 {
 public:
-	Block();
-	sf::RectangleShape graphics;
+	Block(sf::Texture*);
+	sf::Sprite graphics;
 	virtual void draw(sf::RenderWindow&);
 };
 

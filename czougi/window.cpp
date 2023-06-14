@@ -15,6 +15,7 @@ void handleResize(RenderWindow& window, Event& event)
     if (windowAspectRatio > targetAspectRatio)
     {
         viewportHeight = targetAspectRatio / windowAspectRatio;
+
         viewportY = (1 - viewportHeight) / 2;
     }
     else

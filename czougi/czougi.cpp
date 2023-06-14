@@ -1,10 +1,13 @@
 ﻿#include <SFML/Graphics.hpp>
+#include <iostream>
 #include "window.h"
 #include "Scene.h"
 #include "Menu.h"
 #include "font.h"
+#include "textures.h"
 #include "Settings.h"
 
+using namespace std;
 using namespace sf;
 
 int main()
@@ -16,8 +19,17 @@ int main()
     background.setPosition(0, 0);
     background.setFillColor(Color::Black);
 
-    loadFonts();
-    loadSettings();
+    try
+    {
+        loadFonts();
+        loadTextures();
+        loadSettings();
+    }
+    catch (const exception& e)
+    {
+        cout << "Failed to load resources: " << e.what();
+        return 1;
+    }
 
     Scene* scene = new Menu;
     Clock clock;

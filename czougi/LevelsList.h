@@ -1,12 +1,20 @@
 #pragma once
 #include "Scene.h"
 #include "font.h"
+#include <vector>
+#include "Level.h"
+#include "utils.h"
+#include "window.h"
+#include "Arena.h"
+#include "Editor.h"
+#include "Level.h"
 
 class LevelsList :
     public Scene
 {
 private:
-	sf::Text title;
+	std::vector<sf::Text> levelNames;
+	sf::Text addLevelButton;
 public:
 	LevelsList();
 	Scene* processEvent(sf::RenderWindow& window, sf::Event& event);

@@ -63,6 +63,21 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="textures.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="RenamePrompt.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="Prompt.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="InvalidLevelPrompt.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h">
@@ -110,10 +125,63 @@
     <ClInclude Include="Bullet.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="textures.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="RenamePrompt.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="Prompt.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="InvalidLevelPrompt.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Roboto-Regular.ttf">
       <Filter>Pliki zasobów</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\blue-tank.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\brick-wall.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\concrete-wall.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\green-tank.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\leaves.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\red-tank.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\water.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\yellow-tank.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\blue-eagle.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\green-eagle.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\red-eagle.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\yellow-eagle.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
   </ItemGroup>
 </Project>

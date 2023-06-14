@@ -1,18 +1,21 @@
 #include "Player.h"
 
-
-const int PLAYER_SIZE = 2 * BLOCK_SIZE - 5; // -5 by komfortowo sie poruszac miedzy blokami
 using namespace sf;
-
-Player::Player(int playerNumber, Vector2f startPos) : graphics(Vector2f(PLAYER_SIZE, PLAYER_SIZE))
+	
+Texture* getPlayerTexture(PlayerColor playerColor)
 {
+	if (playerColor == 0)		return yellowTankTexture;
+	if (playerColor == 1)		return blueTankTexture;
+	if (playerColor == 2)		return greenTankTexture;
+	return redTankTexture;
+}
 
-	Color playerColor = Color::Red;
-	if (playerNumber == 0)		playerColor = Color::Yellow;
-	else if (playerNumber == 1)	playerColor = Color::Blue;
-	else if (playerNumber == 2)	playerColor = Color::Green;
-	graphics.setFillColor(playerColor);
-	_playerNumber = playerNumber;
+Player::Player(PlayerColor playerColor, Vector2f startPos) : 
+	graphics(*getPlayerTexture(playerColor)),
+	playerColor(playerColor),
+	eagle(playerColor)
+{
+	graphics.setScale(TEXTURE_SCALE);
 	_startPos = startPos;
 	_timeSinceDeath = 3.5;
 	_hasCollision = 1;
@@ -24,15 +27,17 @@ void Player::draw(RenderWindow& window)
 	window.draw(graphics);
 }
 
-Eagle::Eagle(int playerNumber) : graphics(Vector2f(BLOCK_SIZE * 2, BLOCK_SIZE * 2))
+Texture* getEagleTexture(PlayerColor playerColor)
 {
-	Color playerColor = Color::Red;
-	if (playerNumber == 0)		playerColor = Color::Yellow;
-	else if (playerNumber == 1)	playerColor = Color::Blue;
-	else if (playerNumber == 2)	playerColor = Color::Green;
-
-	graphics.setFillColor(playerColor);
-	_playerNumber = playerNumber;
+	if (playerColor == 0)		return yellowEagleTexture;
+	if (playerColor == 1)		return blueEagleTexture;
+	if (playerColor == 2)		return greenEagleTexture;
+	return redEagleTexture;
+}
+	
+Eagle::Eagle(PlayerColor playerColor) : graphics(*getEagleTexture(playerColor)), _isAlive(false)
+{
+	graphics.setScale(TEXTURE_SCALE);
 	_isAlive = 1;
 	_hasCollision = 1;
 }
