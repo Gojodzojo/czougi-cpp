@@ -20,6 +20,7 @@ Player::Player(PlayerColor playerColor, Vector2f startPos) :
 	_timeSinceDeath = 3.5;
 	_hasCollision = 1;
 	_isAlive = 1;
+
 }
 
 void Player::draw(RenderWindow& window)
