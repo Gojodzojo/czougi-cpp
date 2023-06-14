@@ -11,7 +11,9 @@
 #include <memory>
 #include <iostream>
 #include "LevelsList.h"
+#include "Prompt.h"
 #include "RenamePrompt.h"
+#include "InvalidLevelPrompt.h"
 
 class Editor :
 	public Scene
@@ -30,7 +32,7 @@ private:
 	sf::RectangleShape playIcon;
 	sf::RectangleShape saveIcon;
 	sf::RectangleShape deleteIcon;
-	RenamePrompt renamePrompt;
+	std::unique_ptr<Prompt> prompt;
 
 public:
 	Editor(Level);

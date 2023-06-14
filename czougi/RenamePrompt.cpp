@@ -3,13 +3,8 @@
 using namespace sf;
 using namespace std;
 
-const float SCREEN_CENTER_X = VIEW_WIDTH / 2.0;
-const float SCREEN_CENTER_Y = VIEW_HEIGHT / 2.0;
 
-const float BACKGROUND_WIDTH = 700;
-const float BACKGROUND_HEIGHT = 500;
-
-RenamePrompt::RenamePrompt(Level& level) : level(level), isOpened(false), background(Vector2f(BACKGROUND_WIDTH, BACKGROUND_HEIGHT))
+RenamePrompt::RenamePrompt(Level& level) : level(level), background(Vector2f(BACKGROUND_WIDTH, BACKGROUND_HEIGHT))
 {
 	title.setFont(robotoRegular);
 	title.setCharacterSize(50);
@@ -36,11 +31,17 @@ RenamePrompt::RenamePrompt(Level& level) : level(level), isOpened(false), backgr
 	okButtonText.setPosition(SCREEN_CENTER_X + BACKGROUND_WIDTH / 4, SCREEN_CENTER_Y + 130);
 	cancelButtonText.setPosition(SCREEN_CENTER_X - BACKGROUND_WIDTH / 4, SCREEN_CENTER_Y + 130);
 
+	title.setFillColor(Color::Black);
+	newName.setFillColor(Color::Blue);
 	errorText.setFillColor(Color::Red);
+	okButtonText.setFillColor(Color::Green);
+	cancelButtonText.setFillColor(Color::Red);
 
 	background.setOrigin(BACKGROUND_WIDTH / 2, BACKGROUND_HEIGHT / 2);
 	background.setPosition(SCREEN_CENTER_X, SCREEN_CENTER_Y);
-	background.setFillColor(Color::Magenta);
+	background.setFillColor(Color::White);
+	background.setOutlineColor(Color::Cyan);
+	background.setOutlineThickness(5);
 }
 
 void RenamePrompt::draw(RenderWindow& window)
@@ -53,7 +54,7 @@ void RenamePrompt::draw(RenderWindow& window)
 	window.draw(cancelButtonText);
 }
 
-void RenamePrompt::processEvent(sf::RenderWindow& window, sf::Event& event)
+bool RenamePrompt::processEvent(sf::RenderWindow& window, sf::Event& event)
 {
 	string newNameString = newName.getString();
 
@@ -65,13 +66,13 @@ void RenamePrompt::processEvent(sf::RenderWindow& window, sf::Event& event)
 		{
 			newName.setString(level.name);
 			errorText.setString("");
-			isOpened = false;
+			return false;
 		}
 		else if (isHovered(okButtonText.getGlobalBounds(), mousePosition) && newNameString.length() > 0 && (isLevelNameAvaliable(newNameString) || newNameString == level.name))
 		{
 			level.rename(newNameString);
 			errorText.setString("");
-			isOpened = false;
+			return false;
 		}
 	}
 	else if (event.type == Event::KeyPressed)
@@ -122,4 +123,6 @@ void RenamePrompt::processEvent(sf::RenderWindow& window, sf::Event& event)
 	}
 
 	centerTextOrigin(newName);
+
+	return true;
 }

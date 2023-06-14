@@ -4,8 +4,9 @@
 #include "window.h"
 #include "font.h"
 #include "utils.h"
+#include "Prompt.h"
 
-class RenamePrompt
+class RenamePrompt : public Prompt 
 {
 	Level& level;
 	sf::Text newName;
@@ -18,7 +19,6 @@ class RenamePrompt
 public:
 	RenamePrompt(Level&);
 	void draw(sf::RenderWindow&);
-	void processEvent(sf::RenderWindow& window, sf::Event& event);
-	bool isOpened;
+	bool processEvent(sf::RenderWindow& window, sf::Event& event);
 };
 

@@ -18,7 +18,7 @@ const float FIRST_ROW_TOOL_ICON_Y = 180;
 
 Editor::Editor(Level level) : 
 	level(level),
-	renamePrompt(this->level),
+	prompt(nullptr),
 	toolbarBackground(Vector2f(TOOLBAR_WIDTH, VIEW_HEIGHT)),
 	playIcon(FILE_OPERATION_ICON_SIZE),
 	saveIcon(FILE_OPERATION_ICON_SIZE),
@@ -72,11 +72,14 @@ Editor::Editor(Level level) :
 
 Scene* Editor::processEvent(sf::RenderWindow& window, sf::Event& event)
 {
-	if (renamePrompt.isOpened)
+	if (prompt != nullptr)
 	{
-		renamePrompt.processEvent(window, event);
-		levelName.setString(level.name);
-		centerTextOrigin(levelName);
+		if (!prompt->processEvent(window, event))
+		{
+			levelName.setString(level.name);
+			centerTextOrigin(levelName);
+			prompt.reset();
+		}
 	}
 	else
 	{
@@ -134,14 +137,21 @@ Scene* Editor::processEvent(sf::RenderWindow& window, sf::Event& event)
 			}
 			else
 			{
-				if (isHovered(saveIcon.getGlobalBounds(), mousePosition) && level.canBeSaved())
+				if (isHovered(saveIcon.getGlobalBounds(), mousePosition))
 				{
-					level.save();
-					return new LevelsList;
+					if(level.canBeSaved())
+					{
+						level.save();
+						return new LevelsList;
+					}
+					else
+					{
+						prompt = make_unique<InvalidLevelPrompt>();
+					}
 				}
 				else if (isHovered(levelName.getGlobalBounds(), mousePosition))
 				{
-					renamePrompt.isOpened = true;
+					prompt = make_unique<RenamePrompt>(level);
 				}
 
 				for (int i = 0; i < sizeof(tools) / sizeof(unique_ptr<Tool>); i++)
@@ -233,10 +243,10 @@ void Editor::draw(sf::RenderWindow& window)
 		}
 	}
 
-	if (renamePrompt.isOpened)
+	if (prompt != nullptr)
 	{
 		window.setMouseCursorVisible(true);
-		renamePrompt.draw(window);
+		prompt->draw(window);
 	}
 	else
 	{
