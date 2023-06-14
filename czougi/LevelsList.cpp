@@ -16,7 +16,7 @@ LevelsList::LevelsList()
 		level.setCharacterSize(50);
 		level.setString(names[i]);
 		centerTextOrigin(level);
-		level.setPosition(SCREEN_CENTER_X, 100 + i * 100);
+		level.setPosition(VIEW_CENTER_X, 100 + i * 100);
 
 		levelNames.push_back(level);
 	}

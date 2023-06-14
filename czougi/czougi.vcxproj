@@ -146,6 +146,7 @@
     <ClCompile Include="Arena.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Creators.cpp" />
+    <ClCompile Include="DeleteLevelPrompt.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="InvalidLevelPrompt.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="Arena.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Creators.h" />
+    <ClInclude Include="DeleteLevelPrompt.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="InvalidLevelPrompt.h" />

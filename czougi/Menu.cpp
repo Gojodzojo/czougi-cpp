@@ -12,19 +12,17 @@ Menu::Menu()
 	settingsText = levelsListText;
 	creatorsText = levelsListText;
 
-	float halfOfWidth = (float)VIEW_WIDTH / 2.0;
-
 	levelsListText.setString("Poziomy");
 	centerTextOrigin(levelsListText);
-	levelsListText.setPosition(halfOfWidth, 100);
+	levelsListText.setPosition(VIEW_CENTER_X, 100);
 
 	settingsText.setString("Ustawienia");
 	centerTextOrigin(settingsText);
-	settingsText.setPosition(halfOfWidth, 200);
+	settingsText.setPosition(VIEW_CENTER_X, 200);
 
 	creatorsText.setString("Twórcy");
 	centerTextOrigin(creatorsText);
-	creatorsText.setPosition(halfOfWidth, 300);
+	creatorsText.setPosition(VIEW_CENTER_X, 300);
 }
 
 Scene* Menu::processEvent(sf::RenderWindow& window, sf::Event& event)

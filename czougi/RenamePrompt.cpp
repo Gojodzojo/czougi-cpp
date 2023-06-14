@@ -25,11 +25,11 @@ RenamePrompt::RenamePrompt(Level& level) : level(level), background(Vector2f(BAC
 	centerTextOrigin(okButtonText);
 	centerTextOrigin(cancelButtonText);
 
-	title.setPosition(SCREEN_CENTER_X, SCREEN_CENTER_Y - 130);
-	newName.setPosition(SCREEN_CENTER_X, SCREEN_CENTER_Y - 60);
-	errorText.setPosition(SCREEN_CENTER_X, SCREEN_CENTER_Y + 30);
-	okButtonText.setPosition(SCREEN_CENTER_X + BACKGROUND_WIDTH / 4, SCREEN_CENTER_Y + 130);
-	cancelButtonText.setPosition(SCREEN_CENTER_X - BACKGROUND_WIDTH / 4, SCREEN_CENTER_Y + 130);
+	title.setPosition(VIEW_CENTER_X, VIEW_CENTER_Y - 130);
+	newName.setPosition(VIEW_CENTER_X, VIEW_CENTER_Y - 60);
+	errorText.setPosition(VIEW_CENTER_X, VIEW_CENTER_Y + 30);
+	okButtonText.setPosition(VIEW_CENTER_X + BACKGROUND_WIDTH / 4, VIEW_CENTER_Y + 130);
+	cancelButtonText.setPosition(VIEW_CENTER_X - BACKGROUND_WIDTH / 4, VIEW_CENTER_Y + 130);
 
 	title.setFillColor(Color::Black);
 	newName.setFillColor(Color::Blue);
@@ -38,7 +38,7 @@ RenamePrompt::RenamePrompt(Level& level) : level(level), background(Vector2f(BAC
 	cancelButtonText.setFillColor(Color::Red);
 
 	background.setOrigin(BACKGROUND_WIDTH / 2, BACKGROUND_HEIGHT / 2);
-	background.setPosition(SCREEN_CENTER_X, SCREEN_CENTER_Y);
+	background.setPosition(VIEW_CENTER_X, VIEW_CENTER_Y);
 	background.setFillColor(Color::White);
 	background.setOutlineColor(Color::Cyan);
 	background.setOutlineThickness(5);
@@ -54,7 +54,7 @@ void RenamePrompt::draw(RenderWindow& window)
 	window.draw(cancelButtonText);
 }
 
-bool RenamePrompt::processEvent(sf::RenderWindow& window, sf::Event& event)
+pair<bool, Scene*> RenamePrompt::processEvent(sf::RenderWindow& window, sf::Event& event)
 {
 	string newNameString = newName.getString();
 
@@ -66,17 +66,18 @@ bool RenamePrompt::processEvent(sf::RenderWindow& window, sf::Event& event)
 		{
 			newName.setString(level.name);
 			errorText.setString("");
-			return false;
+			return make_pair(false, nullptr);
 		}
 		else if (isHovered(okButtonText.getGlobalBounds(), mousePosition) && newNameString.length() > 0 && (isLevelNameAvaliable(newNameString) || newNameString == level.name))
 		{
 			level.rename(newNameString);
 			errorText.setString("");
-			return false;
+			return make_pair(false, nullptr);
 		}
 	}
 	else if (event.type == Event::KeyPressed)
 	{
+		cout << event.key.code << endl;
 		if (event.key.code == Keyboard::Backspace)
 		{
 			newName.setString(newNameString.substr(0, newNameString.length() - 1));
@@ -112,7 +113,7 @@ bool RenamePrompt::processEvent(sf::RenderWindow& window, sf::Event& event)
 		}
 		else if (!isLevelNameAvaliable(newNameString) && newNameString != level.name)
 		{
-			errorText.setString("Nazwa jest zajêta");
+			errorText.setString("Nazwa jest zajeta");
 		}
 		else
 		{
@@ -124,5 +125,5 @@ bool RenamePrompt::processEvent(sf::RenderWindow& window, sf::Event& event)
 
 	centerTextOrigin(newName);
 
-	return true;
+	return make_pair(true, nullptr);
 }

@@ -14,6 +14,7 @@
 #include "Prompt.h"
 #include "RenamePrompt.h"
 #include "InvalidLevelPrompt.h"
+#include "DeleteLevelPrompt.h"
 
 class Editor :
 	public Scene

@@ -63,6 +63,11 @@ void Level::rename(const string& newName)
 	name = newName;
 }
 
+void Level::deleteLevel()
+{
+	filesystem::remove(getLevelPath(name));
+}
+
 bool Level::canBeSaved()
 {
 	if (players.size() < 2)

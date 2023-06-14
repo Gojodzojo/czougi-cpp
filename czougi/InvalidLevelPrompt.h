@@ -14,6 +14,6 @@ class InvalidLevelPrompt :
 public:
     InvalidLevelPrompt();
     void draw(sf::RenderWindow&);
-    bool processEvent(sf::RenderWindow& window, sf::Event& event);
+    std::pair<bool, Scene*> processEvent(sf::RenderWindow& window, sf::Event& event);
 };
 

@@ -74,7 +74,16 @@ Scene* Editor::processEvent(sf::RenderWindow& window, sf::Event& event)
 {
 	if (prompt != nullptr)
 	{
-		if (!prompt->processEvent(window, event))
+		auto result = prompt->processEvent(window, event);
+
+		// Zmień scenę
+		if (result.second != nullptr)
+		{
+			return result.second;
+		}
+
+		// Zamknij okno
+		if (!result.first)
 		{
 			levelName.setString(level.name);
 			centerTextOrigin(levelName);
@@ -148,6 +157,22 @@ Scene* Editor::processEvent(sf::RenderWindow& window, sf::Event& event)
 					{
 						prompt = make_unique<InvalidLevelPrompt>();
 					}
+				}
+				else if (isHovered(playIcon.getGlobalBounds(), mousePosition))
+				{
+					if (level.canBeSaved())
+					{
+						level.save();
+						return new Arena(level);
+					}
+					else
+					{
+						prompt = make_unique<InvalidLevelPrompt>();
+					}
+				}
+				else if (isHovered(deleteIcon.getGlobalBounds(), mousePosition))
+				{
+					prompt = make_unique<DeleteLevelPrompt>(level);
 				}
 				else if (isHovered(levelName.getGlobalBounds(), mousePosition))
 				{

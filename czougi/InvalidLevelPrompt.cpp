@@ -1,6 +1,7 @@
 #include "InvalidLevelPrompt.h"
 
 using namespace sf;
+using namespace std;
 
 InvalidLevelPrompt::InvalidLevelPrompt() : background(Vector2f(BACKGROUND_WIDTH, BACKGROUND_HEIGHT))
 {
@@ -15,14 +16,14 @@ InvalidLevelPrompt::InvalidLevelPrompt() : background(Vector2f(BACKGROUND_WIDTH,
     centerTextOrigin(title);
     centerTextOrigin(okButtonText);
 
-    title.setPosition(SCREEN_CENTER_X, SCREEN_CENTER_Y - 60);
-    okButtonText.setPosition(SCREEN_CENTER_X, SCREEN_CENTER_Y + 130);
+    title.setPosition(VIEW_CENTER_X, VIEW_CENTER_Y - 60);
+    okButtonText.setPosition(VIEW_CENTER_X, VIEW_CENTER_Y + 130);
 
     title.setFillColor(Color::Black);
     okButtonText.setFillColor(Color::Green);
 
     background.setOrigin(BACKGROUND_WIDTH / 2, BACKGROUND_HEIGHT / 2);
-    background.setPosition(SCREEN_CENTER_X, SCREEN_CENTER_Y);
+    background.setPosition(VIEW_CENTER_X, VIEW_CENTER_Y);
     background.setFillColor(Color::White);
     background.setOutlineColor(Color::Cyan);
     background.setOutlineThickness(5);
@@ -35,7 +36,7 @@ void InvalidLevelPrompt::draw(sf::RenderWindow& window)
     window.draw(okButtonText);
 }
 
-bool InvalidLevelPrompt::processEvent(sf::RenderWindow& window, sf::Event& event)
+pair<bool, Scene*> InvalidLevelPrompt::processEvent(sf::RenderWindow& window, sf::Event& event)
 {
     if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left)
     {
@@ -43,9 +44,9 @@ bool InvalidLevelPrompt::processEvent(sf::RenderWindow& window, sf::Event& event
 
         if (isHovered(okButtonText.getGlobalBounds(), mousePosition))
         {
-            return false;
+            return make_pair(false, nullptr);
         }
     }
 
-    return true;
+    return make_pair(true, nullptr);
 }
