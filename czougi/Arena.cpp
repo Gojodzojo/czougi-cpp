@@ -43,6 +43,7 @@ ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT))
 	{
 		level.players[i]._timeSinceDeath = 3.5;
 		level.players[i]._startPos = level.players[i].graphics.getPosition();
+		level.players[i].graphics.setOrigin(512, 512);
 	}
 }
 
@@ -55,16 +56,15 @@ Scene* Arena::processEvent(sf::RenderWindow& window, sf::Event& event)
 			shootTimer[i]++;
 		if (Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].shot) && shootTimer[i] == 15 && level.players[i]._timeSinceDeath >= 3.5)
 		{
-			Vector2f bulletStartPos(level.players[i].graphics.getPosition().x + PLAYER_SIZE / 2 - BulletSize / 2,
-				level.players[i].graphics.getPosition().y + PLAYER_SIZE / 2 - BulletSize / 2);  // ustawienie pocisków na środku
+			Vector2f bulletStartPos(level.players[i].graphics.getPosition().x - BulletSize/2,
+				level.players[i].graphics.getPosition().y - BulletSize/2);  // ustawienie pocisków na środku
 			shootTimer[i] = 0;
 			bullets[i].emplace_back(bulletStartPos, bulletDirections[i]);  //trzymanie w tablicy pozycji startowej i kierunku
 		}
 
 	}
-
+	
 	return nullptr;
-
 }
 
 Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
@@ -86,6 +86,8 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].up) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].down) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].right) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].left) && level.players[i]._timeSinceDeath >= 3.5)
 	{
+		level.players[i].graphics.setOrigin(512, 512);
+		level.players[i].graphics.setRotation(0.f);
 		bulletDirections[i] = Vector2f(0.0f, -1.0f);
 		for (int i = 0; i < level.players.size(); i++)
 		{
@@ -150,6 +152,8 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 	}
 	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].left) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].right) && level.players[i]._timeSinceDeath >= 3.5)
 	{
+		//level.players[i].graphics.setOrigin(512, 512);
+		level.players[i].graphics.setRotation(270.f);
 		bulletDirections[i] = Vector2f(-1.0f, 0.0f);
 
 		for (int i = 0; i < level.players.size(); i++)
@@ -219,7 +223,8 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].down) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].right) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].left) && level.players[i]._timeSinceDeath >= 3.5 )
 	{
 		bulletDirections[i] = Vector2f(0.0f, 1.0f);
-
+		//level.players[i].graphics.setOrigin(512, 512);
+		level.players[i].graphics.setRotation(180.f);
 
 		for (int i = 0; i < level.players.size(); i++)
 		{
@@ -286,6 +291,8 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].right) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].left) && level.players[i]._timeSinceDeath >= 3.5)
 	{
+		//level.players[i].graphics.setOrigin(512, 512);
+		level.players[i].graphics.setRotation(90.f);
 		bulletDirections[i] = Vector2f(1.0f, 0.0f);
 		for (int i = 0; i < level.players.size(); i++)
 		{
@@ -476,12 +483,12 @@ void Arena::draw(sf::RenderWindow& window)
 	{
 		if (level.players[i]._timeSinceDeath >= 3.5)
 		{
-			level.players[i].draw(window);
 			level.players[i]._hasCollision = 1;
 			for (const auto& bullet : bullets[i])
 			{
 				window.draw(bullet.shape);
 			}
+			level.players[i].draw(window);
 	
 		}
 		else

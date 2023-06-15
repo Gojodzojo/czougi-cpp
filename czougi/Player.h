@@ -3,7 +3,7 @@
 #include "Keybindings.h"
 #include "Block.h"
 
-const int PLAYER_SIZE = 2 * BLOCK_SIZE - 5; // -5 by komfortowo sie poruszac miedzy blokami
+const int PLAYER_SIZE = 2 * BLOCK_SIZE - 4; // -5 by komfortowo sie poruszac miedzy blokami
 const sf::Vector2f PLAYER_SIZE_VEC(PLAYER_SIZE, PLAYER_SIZE);
 
 const int EAGLE_SIZE = 2 * BLOCK_SIZE;
