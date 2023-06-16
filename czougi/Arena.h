@@ -16,6 +16,7 @@ class Arena :
 {
 private:
 	sf::Text title;
+	sf::Text winnerText;
 	Level level;
 	sf::RectangleShape ingameStats;
 	sf::Clock clock;
@@ -27,6 +28,7 @@ private:
 	sf::Vector2f bulletDirections[MAX_NUMBER_OF_PLAYERS];
 	sf::Time elapsed = clock.getElapsedTime();
 	bool gameEnded;
+	bool gameOver;
 	
 	
 
