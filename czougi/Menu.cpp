@@ -623,6 +623,8 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
     int x = mousePosition.x;
     int y = mousePosition.y;
 
+    sf::Event event;//wychwyca interakcje z uzytkownikiem
+
     switch (okno) {
     case 0: //pierwsze okno
         window.draw(Tlo1);
@@ -815,6 +817,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[0].up = event.key.code;
                         litera1.setString(ster[playersKeybindings[0].up]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -825,6 +828,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[0].down = event.key.code;
                         litera2.setString(ster[playersKeybindings[0].down]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -835,6 +839,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[0].left = event.key.code;
                         litera3.setString(ster[playersKeybindings[0].left]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -845,6 +850,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[0].right = event.key.code;
                         litera4.setString(ster[playersKeybindings[0].right]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -855,6 +861,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[0].shot = event.key.code;
                         litera17.setString(ster[playersKeybindings[0].shot]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -865,6 +872,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[1].up = event.key.code;
                         litera5.setString(ster[playersKeybindings[1].up]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -875,6 +883,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[1].down = event.key.code;
                         litera6.setString(ster[playersKeybindings[1].down]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -885,6 +894,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[1].left = event.key.code;
                         litera7.setString(ster[playersKeybindings[1].left]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -895,6 +905,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[1].right = event.key.code;
                         litera8.setString(ster[playersKeybindings[1].right]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -905,6 +916,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[1].shot = event.key.code;
                         litera18.setString(ster[playersKeybindings[1].shot]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -915,6 +927,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[2].up = event.key.code;
                         litera9.setString(ster[playersKeybindings[2].up]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -925,6 +938,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[2].down = event.key.code;
                         litera10.setString(ster[playersKeybindings[2].down]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -935,6 +949,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[2].left = event.key.code;
                         litera11.setString(ster[playersKeybindings[2].left]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -945,6 +960,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[2].right = event.key.code;
                         litera12.setString(ster[playersKeybindings[2].right]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -955,6 +971,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[2].shot = event.key.code;
                         litera19.setString(ster[playersKeybindings[2].shot]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -965,6 +982,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[3].up = event.key.code;
                         litera13.setString(ster[playersKeybindings[3].up]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -975,6 +993,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[3].down = event.key.code;
                         litera14.setString(ster[playersKeybindings[3].down]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -985,6 +1004,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[3].left = event.key.code;
                         litera15.setString(ster[playersKeybindings[3].left]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -995,6 +1015,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[3].right = event.key.code;
                         litera16.setString(ster[playersKeybindings[3].right]);
+                        saveKeybindings();
                         break;
                     }
                 }
@@ -1005,6 +1026,7 @@ Scene* Menu::doCalculations(sf::RenderWindow& window, float deltaTime)
                     if (event.type == Event::KeyPressed) {
                         playersKeybindings[3].shot = event.key.code;
                         litera20.setString(ster[playersKeybindings[3].shot]);
+                        saveKeybindings();
                         break;
                     }
                 }

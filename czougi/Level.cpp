@@ -3,7 +3,7 @@
 using namespace sf;
 using namespace std;
 
-string getGameSavesPath()
+string getGameConfigPath()
 {
 	PWSTR path;
 	SHGetKnownFolderPath(FOLDERID_Documents, KF_FLAG_DEFAULT, NULL, &path);
@@ -16,11 +16,22 @@ string getGameSavesPath()
 	return strTo + "\\Czougi";
 }
 
+string getGameSavesPath()
+{
+	return getGameConfigPath() + "\\saves";
+}
+
 vector<string> getLevelNames()
 {
+	string gameConfigPath = getGameConfigPath();
+	string gameSavesPath = gameConfigPath + "\\saves";
+	filesystem::create_directory(gameConfigPath);
+	filesystem::create_directory(gameSavesPath);
+
 	vector<string> levelNames;
 
-	for (const auto& file : filesystem::directory_iterator(getGameSavesPath())) {
+	for (const auto& file : filesystem::directory_iterator(gameSavesPath))
+	{
 		string fileName = file.path().filename().string();
 		levelNames.push_back(fileName.substr(0, fileName.length() - 4));
 	}

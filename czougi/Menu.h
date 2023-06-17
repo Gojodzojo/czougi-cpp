@@ -108,7 +108,6 @@ private:
 	sf::CircleShape shape1;
 	sf::Sprite X1;
 	sf::CircleShape shape;
-	sf::Event event;//wychwyca interakcje z uzytkownikiem
 	int okno;
 	float m;
 	float m2;

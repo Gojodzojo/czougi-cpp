@@ -13,6 +13,7 @@ const int LEVEL_SIZE = 30;
 
 bool isLevelNameAvaliable(const std::string&);
 std::string getLevelPath(const std::string&);
+std::string getGameConfigPath();
 std::string getGameSavesPath();
 std::vector<std::string> getLevelNames();
 
