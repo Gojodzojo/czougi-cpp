@@ -29,20 +29,97 @@ bool bulletsColliding(const RectangleShape& bullet, const Vector2f& blockPositio
  }
 
 Arena::Arena(Level gameLevel) : level(gameLevel),
-ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT))
+ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT)), iconPlayer1(*yellowTankTexture), iconPlayer2(*blueTankTexture), iconPlayer3(*greenTankTexture), iconPlayer4(*redTankTexture)
 {
-
+	Clock timer;
+	timer.restart();
 	ingameStats.setOutlineColor(Color::White);
 	ingameStats.setPosition(VIEW_WIDTH - INGAMESTATS_WIDTH, 0);
+	
+	Texture* playersColors[4] = { yellowTankTexture,blueTankTexture,greenTankTexture, redTankTexture };
+	Color playersTextColors[4] = { Color::Yellow, Color::Blue, Color::Green, Color::Red };
 
+	title.setFont(robotoRegular);
+	title.setFillColor(Color::Black);
+	title.setCharacterSize((VIEW_WIDTH - (INGAMESTATS_WIDTH / 2))* 0.033f); 
+	title.setString(level.name);
+	centerTextOrigin(title);
+	title.setPosition(VIEW_WIDTH - (INGAMESTATS_WIDTH/2), BLOCK_SIZE);
 	winnerText.setFont(robotoRegular);
 	winnerText.setFillColor(Color::White);
 	winnerText.setCharacterSize(120);
+
+
+
+	
+
 
 	backToMenu.setFont(robotoRegular);
 	backToMenu.setFillColor(Color::White);
 	backToMenu.setCharacterSize(50);
 	backToMenu.setString("Nacisnij ESC aby wrocic do MENU");
+	centerTextOrigin(backToMenu);
+	if (level.players.size() >= 1)
+	{
+		iconPlayer1.setScale(TEXTURE_SCALE);
+		iconPlayer1.setPosition(VIEW_WIDTH - (INGAMESTATS_WIDTH / 1.05), 125);
+		numberOfDeathsP1.setPosition(VIEW_WIDTH - (INGAMESTATS_WIDTH / 1.35), 150);
+		numberOfDeathsP1.setFillColor(Color::Yellow);
+		numberOfDeathsP1.setOutlineColor(Color::Black);
+		numberOfDeathsP1.setOutlineThickness(1.5f);
+		numberOfDeathsP1.setFont(robotoRegular);
+	}
+	if (level.players.size() >= 2)
+	{
+
+		iconPlayer1.setTexture(*playersColors[level.players[0].playerColor]);
+		numberOfDeathsP1.setFillColor(playersTextColors[level.players[0].playerColor]);
+		iconPlayer2.setTexture(*playersColors[level.players[1].playerColor]);
+		numberOfDeathsP2.setFillColor(playersTextColors[level.players[1].playerColor]);
+
+		iconPlayer2.setScale(TEXTURE_SCALE);
+		iconPlayer2.setPosition(VIEW_WIDTH - (INGAMESTATS_WIDTH / 1.05), 225);
+
+		numberOfDeathsP2.setPosition(VIEW_WIDTH - (INGAMESTATS_WIDTH / 1.35), 250);
+		numberOfDeathsP2.setOutlineColor(Color::Black);
+		numberOfDeathsP2.setOutlineThickness(1.5f);
+		numberOfDeathsP2.setFont(robotoRegular);
+	}
+	if (level.players.size() >= 3)
+	{
+		iconPlayer1.setTexture(*playersColors[level.players[0].playerColor]);
+		numberOfDeathsP1.setFillColor(playersTextColors[level.players[0].playerColor]);
+		iconPlayer2.setTexture(*playersColors[level.players[1].playerColor]);
+		numberOfDeathsP2.setFillColor(playersTextColors[level.players[1].playerColor]);
+		iconPlayer3.setTexture(*playersColors[level.players[2].playerColor]);
+		numberOfDeathsP3.setFillColor(playersTextColors[level.players[2].playerColor]);
+
+		iconPlayer3.setScale(TEXTURE_SCALE);
+		iconPlayer3.setPosition(VIEW_WIDTH - (INGAMESTATS_WIDTH / 2), 125);
+
+		numberOfDeathsP3.setPosition(VIEW_WIDTH - (INGAMESTATS_WIDTH / 3.4), 150);
+		numberOfDeathsP3.setOutlineColor(Color::Black);
+		numberOfDeathsP3.setOutlineThickness(1.5f);
+		numberOfDeathsP3.setFont(robotoRegular);
+	}
+	if (level.players.size() == 4)
+	{
+		iconPlayer1.setTexture(*playersColors[level.players[0].playerColor]);
+		numberOfDeathsP1.setFillColor(playersTextColors[level.players[0].playerColor]);
+		iconPlayer2.setTexture(*playersColors[level.players[1].playerColor]);
+		numberOfDeathsP2.setFillColor(playersTextColors[level.players[1].playerColor]);
+		iconPlayer3.setTexture(*playersColors[level.players[2].playerColor]);
+		numberOfDeathsP3.setFillColor(playersTextColors[level.players[2].playerColor]);
+		iconPlayer4.setTexture(*playersColors[level.players[3].playerColor]);
+		numberOfDeathsP4.setFillColor(playersTextColors[level.players[3].playerColor]);
+
+		iconPlayer4.setScale(TEXTURE_SCALE);
+		iconPlayer4.setPosition(VIEW_WIDTH - (INGAMESTATS_WIDTH / 2), 225);
+		numberOfDeathsP4.setPosition(VIEW_WIDTH - (INGAMESTATS_WIDTH / 3.4), 250);
+		numberOfDeathsP4.setOutlineColor(Color::Black);
+		numberOfDeathsP4.setOutlineThickness(1.5f);
+		numberOfDeathsP4.setFont(robotoRegular);
+	}
 	vector <Bullet> bullets;
 	Vector2f bulletDirections; // domyślny kierunek pocisków
 
@@ -51,8 +128,6 @@ ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT))
 	{
 		level.players[i]._timeSinceDeath = 3.5;
 		level.players[i]._startPos = level.players[i].graphics.getPosition();
-		level.players[i].graphics.setOrigin(512, 512);
-
 	}
 }
 
@@ -65,8 +140,8 @@ Scene* Arena::processEvent(sf::RenderWindow& window, sf::Event& event)
 			shootTimer[i]++;
 		if (Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].shot) && shootTimer[i] == 15 && level.players[i]._timeSinceDeath >= 3.5)
 		{
-			Vector2f bulletStartPos(level.players[i].graphics.getPosition().x - BulletSize/2,
-				level.players[i].graphics.getPosition().y - BulletSize/2);  // ustawienie pocisków na środku
+			Vector2f bulletStartPos(level.players[i].graphics.getPosition().x + PLAYER_SIZE / 2 - BulletSize / 2,
+				level.players[i].graphics.getPosition().y + PLAYER_SIZE / 2 - BulletSize / 2); // ustawienie pocisków na środku
 			shootTimer[i] = 0;
 			bullets[i].emplace_back(bulletStartPos, bulletDirections[i]);  //trzymanie w tablicy pozycji startowej i kierunku
 		}
@@ -78,7 +153,6 @@ Scene* Arena::processEvent(sf::RenderWindow& window, sf::Event& event)
 
 Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 {
-
 	deltaTime = clock.getElapsedTime().asSeconds();
 	clock.restart();
 	float velocity = 150 * deltaTime;
@@ -88,14 +162,12 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		eaglePositions[i] = level.players[i].eagle.graphics.getPosition();
 	}
 
-	cout << deltaTime << endl;
 
 	for (int i = 0; i < level.players.size(); i++)
 	{	
 
 	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].up) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].down) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].right) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].left) && level.players[i]._timeSinceDeath >= 3.5)
 	{
-		level.players[i].graphics.setOrigin(512, 512);
 		level.players[i].graphics.setRotation(0.f);
 		bulletDirections[i] = Vector2f(0.0f, -1.0f);
 		for (int i = 0; i < level.players.size(); i++)
@@ -161,7 +233,6 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 	}
 	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].left) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].right) && level.players[i]._timeSinceDeath >= 3.5)
 	{
-		//level.players[i].graphics.setOrigin(512, 512);
 		level.players[i].graphics.setRotation(270.f);
 		bulletDirections[i] = Vector2f(-1.0f, 0.0f);
 
@@ -232,7 +303,6 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].down) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].right) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].left) && level.players[i]._timeSinceDeath >= 3.5 )
 	{
 		bulletDirections[i] = Vector2f(0.0f, 1.0f);
-		//level.players[i].graphics.setOrigin(512, 512);
 		level.players[i].graphics.setRotation(180.f);
 
 		for (int i = 0; i < level.players.size(); i++)
@@ -300,7 +370,6 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 
 	if (Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].right) and !Keyboard::isKeyPressed(playersKeybindings[level.players[i].playerColor].left) && level.players[i]._timeSinceDeath >= 3.5)
 	{
-		//level.players[i].graphics.setOrigin(512, 512);
 		level.players[i].graphics.setRotation(90.f);
 		bulletDirections[i] = Vector2f(1.0f, 0.0f);
 		for (int i = 0; i < level.players.size(); i++)
@@ -440,6 +509,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 					j--;
 					playerPositions[k] = level.players[k]._startPos; 
 					level.players[k].graphics.setPosition(playerPositions[k]);
+					level.players[k].numberOfDeaths += 1;
 				}
 			}
 		}
@@ -470,8 +540,25 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 				return new Menu;
 			}
 		}
-	}
 
+
+	if (level.players.size() >= 1)
+		numberOfDeathsP1.setString(to_string(level.players[0].numberOfDeaths));
+	 if (level.players.size() >= 2)
+		numberOfDeathsP2.setString(to_string(level.players[1].numberOfDeaths));
+	 if (level.players.size() >= 3)
+		numberOfDeathsP3.setString(to_string(level.players[2].numberOfDeaths));
+	if (level.players.size() == 4)
+		numberOfDeathsP4.setString(to_string(level.players[3].numberOfDeaths));
+
+	centerTextOrigin(numberOfDeathsP1);
+	centerTextOrigin(numberOfDeathsP2);
+	centerTextOrigin(numberOfDeathsP3);
+	centerTextOrigin(numberOfDeathsP4);
+
+
+
+	}
 	return nullptr;
 }
 
@@ -481,6 +568,30 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 void Arena::draw(sf::RenderWindow& window)
 {
 	window.draw(ingameStats);
+	window.draw(title);
+	if (level.players.size() >= 1)
+	{
+		window.draw(iconPlayer1);
+		window.draw(numberOfDeathsP1);
+	}
+	if (level.players.size() >= 2)
+	{
+		window.draw(iconPlayer2);
+		window.draw(numberOfDeathsP2);
+	}
+	if (level.players.size() >= 3)
+	{
+		window.draw(iconPlayer3);
+		window.draw(numberOfDeathsP3);
+	}
+	if (level.players.size() == 4)
+	{
+		window.draw(iconPlayer4);
+		window.draw(numberOfDeathsP4);
+	}
+	
+	
+
 
 	for (int i = 0; i < level.waters.size(); i++)
 		level.waters[i].draw(window);
@@ -526,10 +637,8 @@ void Arena::draw(sf::RenderWindow& window)
 	{
 		centerTextOrigin(winnerText);
 		winnerText.setPosition((VIEW_WIDTH - INGAMESTATS_WIDTH) / 2, VIEW_HEIGHT / 2);
-		centerTextOrigin(backToMenu);
 		backToMenu.setPosition((VIEW_WIDTH - INGAMESTATS_WIDTH) / 2, VIEW_HEIGHT / 2 + 100);
 		window.draw(winnerText);
 		window.draw(backToMenu);
 	}
-	greenEagleTexture;
 }

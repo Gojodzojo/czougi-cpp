@@ -42,6 +42,7 @@ public:
 	float _timeSinceDeath;
 	bool _hasCollision;
 	bool _isAlive;
+	int numberOfDeaths;
 };
 
 

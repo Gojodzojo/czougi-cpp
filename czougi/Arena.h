@@ -18,6 +18,10 @@ private:
 	sf::Text title;
 	sf::Text winnerText;
 	sf::Text backToMenu;
+	sf::Text numberOfDeathsP1;
+	sf::Text numberOfDeathsP2;
+	sf::Text numberOfDeathsP3;
+	sf::Text numberOfDeathsP4;
 	Level level;
 	sf::RectangleShape ingameStats;
 	sf::Clock clock;
@@ -30,7 +34,14 @@ private:
 	sf::Time elapsed = clock.getElapsedTime();
 	bool gameEnded;
 	bool gameOver;
-	
+	sf::Sprite iconPlayer1;
+	sf::Sprite iconPlayer2;
+	sf::Sprite iconPlayer3;
+	sf::Sprite iconPlayer4;
+	sf::Clock timer;
+
+
+
 	
 
 
