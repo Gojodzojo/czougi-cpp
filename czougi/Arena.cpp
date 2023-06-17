@@ -36,8 +36,7 @@ ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT)), iconPlayer1(*yellowTankTe
 	ingameStats.setOutlineColor(Color::White);
 	ingameStats.setPosition(VIEW_WIDTH - INGAMESTATS_WIDTH, 0);
 	
-	Texture* playersColors[4] = { yellowTankTexture,blueTankTexture,greenTankTexture, redTankTexture };
-	Color playersTextColors[4] = { Color::Yellow, Color::Blue, Color::Green, Color::Red };
+
 
 	title.setFont(robotoRegular);
 	title.setFillColor(Color::Black);
@@ -535,6 +534,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		{
 			gameOver = 1;
 			winnerText.setString("Wygral gracz " + to_string(i+1));
+			winnerText.setFillColor(playersTextColors[level.players[i].playerColor]);
 			if (Keyboard::isKeyPressed(Keyboard::Escape))
 			{
 				return new Menu;
