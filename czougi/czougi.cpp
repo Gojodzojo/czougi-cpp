@@ -57,7 +57,7 @@ int main()
                 handleResize(window, event);
         }
 
-        window.clear(Color::Blue);
+        window.clear(Color::Color(0x828282FF));
         window.draw(background);
        
         Scene* newScene = scene->doCalculations(window, deltaTime);

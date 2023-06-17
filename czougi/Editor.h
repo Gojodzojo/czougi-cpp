@@ -29,9 +29,9 @@ private:
 	sf::RectangleShape toolbarBackground;
 	sf::RectangleShape horizontalLine;
 	sf::RectangleShape verticalLine;
-	sf::RectangleShape playIcon;
-	sf::RectangleShape saveIcon;
-	sf::RectangleShape deleteIcon;
+	sf::Sprite playIcon;
+	sf::Sprite saveIcon;
+	sf::Sprite deleteIcon;
 	std::unique_ptr<Prompt> prompt;
 
 public:

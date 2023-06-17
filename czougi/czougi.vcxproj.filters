@@ -186,5 +186,14 @@
     <Image Include="images\x.png">
       <Filter>Pliki zasobów</Filter>
     </Image>
+    <Image Include="images\delete-icon.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\play-icon.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\save-icon.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -192,12 +192,15 @@
     <Image Include="images\Button1.png" />
     <Image Include="images\cog.png" />
     <Image Include="images\concrete-wall.png" />
+    <Image Include="images\delete-icon.png" />
     <Image Include="images\eraser.png" />
     <Image Include="images\green-eagle.png" />
     <Image Include="images\green-tank.png" />
     <Image Include="images\leaves.png" />
+    <Image Include="images\play-icon.png" />
     <Image Include="images\red-eagle.png" />
     <Image Include="images\red-tank.png" />
+    <Image Include="images\save-icon.png" />
     <Image Include="images\tytol.png" />
     <Image Include="images\tło.jpg" />
     <Image Include="images\water.png" />

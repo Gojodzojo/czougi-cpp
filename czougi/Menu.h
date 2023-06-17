@@ -5,7 +5,6 @@
 #include "window.h"
 #include "utils.h"
 #include "Keybindings.h"
-#include "Creators.h"
 #include "textures.h"
 #include "Level.h"
 #include "Arena.h"
@@ -15,7 +14,6 @@ class Menu :
     public Scene
 {
 private:
-	// char sterowanie[20];
 	int z2;
 	sf::Sprite Tlo1;
 	sf::Sprite Tytol1;

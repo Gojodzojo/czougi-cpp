@@ -20,6 +20,10 @@ Texture* leavesTexture;
 
 Texture* eraserTexture;
 
+Texture* playIconTexture;
+Texture* saveIconTexture;
+Texture* deleteIconTexture;
+
 Texture* tlo;
 Texture* Tytol;
 Texture* button1;
@@ -45,12 +49,15 @@ void loadTextures()
 
 	eraserTexture = loadTexture("eraser.png");
 
+	playIconTexture = loadTexture("play-icon.png");
+	saveIconTexture = loadTexture("save-icon.png");
+	deleteIconTexture = loadTexture("delete-icon.png");
+
 	tlo = loadTexture("t³o.jpg");
 	Tytol = loadTexture("tytol.png");
 	button1 = loadTexture("Button1.png");
 	button2 = loadTexture("cog.png");
 	X = loadTexture("X.png");
-
 }
 
 Texture* loadTexture(const char* fileName)
