@@ -31,8 +31,6 @@ bool bulletsColliding(const RectangleShape& bullet, const Vector2f& blockPositio
 Arena::Arena(Level gameLevel) : level(gameLevel),
 ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT)), iconPlayer1(*yellowTankTexture), iconPlayer2(*blueTankTexture), iconPlayer3(*greenTankTexture), iconPlayer4(*redTankTexture)
 {
-	Clock timer;
-	timer.restart();
 	ingameStats.setOutlineColor(Color::White);
 	ingameStats.setPosition(VIEW_WIDTH - INGAMESTATS_WIDTH, 0);
 	
@@ -40,7 +38,7 @@ ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT)), iconPlayer1(*yellowTankTe
 
 	title.setFont(robotoRegular);
 	title.setFillColor(Color::Black);
-	title.setCharacterSize((VIEW_WIDTH - (INGAMESTATS_WIDTH / 2))* 0.033f); 
+	title.setCharacterSize((VIEW_WIDTH - (INGAMESTATS_WIDTH / 2))* 0.03f); 
 	title.setString(level.name);
 	centerTextOrigin(title);
 	title.setPosition(VIEW_WIDTH - (INGAMESTATS_WIDTH/2), BLOCK_SIZE);

@@ -38,7 +38,6 @@ private:
 	sf::Sprite iconPlayer2;
 	sf::Sprite iconPlayer3;
 	sf::Sprite iconPlayer4;
-	sf::Clock timer;
 	sf::Texture* playersColors[4] = { yellowTankTexture,blueTankTexture,greenTankTexture, redTankTexture };
 	sf::Color playersTextColors[4] = { sf::Color::Yellow, sf::Color::Blue, sf::Color::Green, sf::Color::Red };
 
