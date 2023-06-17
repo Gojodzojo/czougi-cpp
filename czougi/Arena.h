@@ -6,7 +6,7 @@
 #include "Block.h"
 #include "Bullet.h"
 #include <vector>
-
+#include "Tool.h"
 
 
 #define MAX_NUMBER_OF_PLAYERS 4
@@ -17,6 +17,7 @@ class Arena :
 private:
 	sf::Text title;
 	sf::Text winnerText;
+	sf::Text backToMenu;
 	Level level;
 	sf::RectangleShape ingameStats;
 	sf::Clock clock;

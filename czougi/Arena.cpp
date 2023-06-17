@@ -5,7 +5,7 @@
 #include "Player.h"
 #include "Eagles.h"
 #include <vector>
-#include "utils.h"
+#include"utils.h"
 using namespace sf;
 using namespace std;
 
@@ -39,8 +39,10 @@ ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT))
 	winnerText.setFillColor(Color::White);
 	winnerText.setCharacterSize(120);
 
-	
-
+	backToMenu.setFont(robotoRegular);
+	backToMenu.setFillColor(Color::White);
+	backToMenu.setCharacterSize(50);
+	backToMenu.setString("Nacisnij ESC aby wrocic do MENU");
 	vector <Bullet> bullets;
 	Vector2f bulletDirections; // domyślny kierunek pocisków
 
@@ -463,6 +465,10 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 		{
 			gameOver = 1;
 			winnerText.setString("Wygral gracz " + to_string(i+1));
+			if (Keyboard::isKeyPressed(Keyboard::Escape))
+			{
+				return new Menu;
+			}
 		}
 	}
 
@@ -520,6 +526,10 @@ void Arena::draw(sf::RenderWindow& window)
 	{
 		centerTextOrigin(winnerText);
 		winnerText.setPosition((VIEW_WIDTH - INGAMESTATS_WIDTH) / 2, VIEW_HEIGHT / 2);
+		centerTextOrigin(backToMenu);
+		backToMenu.setPosition((VIEW_WIDTH - INGAMESTATS_WIDTH) / 2, VIEW_HEIGHT / 2 + 100);
 		window.draw(winnerText);
+		window.draw(backToMenu);
 	}
+	greenEagleTexture;
 }
