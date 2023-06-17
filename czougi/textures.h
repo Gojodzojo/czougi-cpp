@@ -24,5 +24,11 @@ extern sf::Texture* leavesTexture;
 
 extern sf::Texture* eraserTexture;
 
+extern sf::Texture* tlo;
+extern sf::Texture* Tytol;
+extern sf::Texture* button1;
+extern sf::Texture* button2;
+extern sf::Texture* X;
+
 void loadTextures();
 sf::Texture* loadTexture(const char*);

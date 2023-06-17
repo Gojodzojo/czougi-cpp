@@ -33,15 +33,6 @@
     <ClCompile Include="utils.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="LevelsList.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
-    <ClCompile Include="Settings.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
-    <ClCompile Include="Creators.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
     <ClCompile Include="Editor.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
@@ -75,6 +66,9 @@
     <ClCompile Include="InvalidLevelPrompt.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="DeleteLevelPrompt.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h">
@@ -90,15 +84,6 @@
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="utils.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelsList.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
-    <ClInclude Include="Creators.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="Editor.h">
@@ -134,9 +119,15 @@
     <ClInclude Include="InvalidLevelPrompt.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="DeleteLevelPrompt.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Roboto-Regular.ttf">
+      <Filter>Pliki zasobów</Filter>
+    </Font>
+    <Font Include="fonts\OpenSans-ExtraBold.ttf">
       <Filter>Pliki zasobów</Filter>
     </Font>
   </ItemGroup>
@@ -175,6 +166,24 @@
       <Filter>Pliki zasobów</Filter>
     </Image>
     <Image Include="images\yellow-eagle.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\Button1.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\cog.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\eraser.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\tytol.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\tło.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\x.png">
       <Filter>Pliki zasobów</Filter>
     </Image>
   </ItemGroup>

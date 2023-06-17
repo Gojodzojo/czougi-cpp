@@ -5,7 +5,7 @@
 #include "Menu.h"
 #include "font.h"
 #include "textures.h"
-#include "Settings.h"
+#include "Keybindings.h"
 
 using namespace std;
 using namespace sf;
@@ -23,7 +23,7 @@ int main()
     {
         loadFonts();
         loadTextures();
-        loadSettings();
+        loadKeybindings();
     }
     catch (const exception& e)
     {
@@ -56,6 +56,9 @@ int main()
             else if (event.type == Event::Resized)
                 handleResize(window, event);
         }
+
+        window.clear(Color::Blue);
+        window.draw(background);
        
         Scene* newScene = scene->doCalculations(window, deltaTime);
         if (newScene != nullptr)
@@ -65,8 +68,6 @@ int main()
         }
 
         // Rysowanie obiektów
-        window.clear(Color::Blue);
-        window.draw(background);
         scene->draw(window);
         window.display();
     }

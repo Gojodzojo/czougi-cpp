@@ -145,21 +145,18 @@
   <ItemGroup>
     <ClCompile Include="Arena.cpp" />
     <ClCompile Include="Block.cpp" />
-    <ClCompile Include="Creators.cpp" />
     <ClCompile Include="DeleteLevelPrompt.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="InvalidLevelPrompt.cpp" />
     <ClCompile Include="Keybindings.cpp" />
     <ClCompile Include="Level.cpp" />
-    <ClCompile Include="LevelsList.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Prompt.cpp" />
     <ClCompile Include="RenamePrompt.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="czougi.cpp" />
-    <ClCompile Include="Settings.cpp" />
     <ClCompile Include="textures.cpp" />
     <ClCompile Include="Tool.cpp" />
     <ClCompile Include="utils.cpp" />
@@ -168,39 +165,43 @@
   <ItemGroup>
     <ClInclude Include="Arena.h" />
     <ClInclude Include="Block.h" />
-    <ClInclude Include="Creators.h" />
     <ClInclude Include="DeleteLevelPrompt.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="InvalidLevelPrompt.h" />
     <ClInclude Include="Keybindings.h" />
     <ClInclude Include="Level.h" />
-    <ClInclude Include="LevelsList.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Prompt.h" />
     <ClInclude Include="RenamePrompt.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="Settings.h" />
     <ClInclude Include="textures.h" />
     <ClInclude Include="Tool.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
+    <Font Include="fonts\OpenSans-ExtraBold.ttf" />
     <Font Include="Roboto-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="images\blue-eagle.png" />
     <Image Include="images\blue-tank.png" />
     <Image Include="images\brick-wall.png" />
+    <Image Include="images\Button1.png" />
+    <Image Include="images\cog.png" />
     <Image Include="images\concrete-wall.png" />
+    <Image Include="images\eraser.png" />
     <Image Include="images\green-eagle.png" />
     <Image Include="images\green-tank.png" />
     <Image Include="images\leaves.png" />
     <Image Include="images\red-eagle.png" />
     <Image Include="images\red-tank.png" />
+    <Image Include="images\tytol.png" />
+    <Image Include="images\tło.jpg" />
     <Image Include="images\water.png" />
+    <Image Include="images\x.png" />
     <Image Include="images\yellow-eagle.png" />
     <Image Include="images\yellow-tank.png" />
   </ItemGroup>

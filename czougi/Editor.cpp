@@ -138,7 +138,7 @@ Scene* Editor::processEvent(sf::RenderWindow& window, sf::Event& event)
 		{
 			Vector2f mousePosition = window.mapPixelToCoords(Vector2i(event.mouseButton.x, event.mouseButton.y));
 
-			if (mousePosition.x > 0 && mousePosition.x < VIEW_HEIGHT && mousePosition.y > 0 && mousePosition.y < VIEW_HEIGHT)
+			if (mousePosition.x > 0 && mousePosition.x < VIEW_HEIGHT && mousePosition.y > 0 && mousePosition.y < VIEW_HEIGHT && (isSelecting == tools[activeToolIndex]->isSelectable))
 			{
 				Vector2f cursorPosition(((int)mousePosition.x / LEVEL_SIZE) * BLOCK_SIZE, ((int)mousePosition.y / LEVEL_SIZE) * BLOCK_SIZE);
 				Vector2f selectionRectanglePosition = selectionRectangle.getPosition();
@@ -151,7 +151,7 @@ Scene* Editor::processEvent(sf::RenderWindow& window, sf::Event& event)
 					if(level.canBeSaved())
 					{
 						level.save();
-						return new LevelsList;
+						return new Menu(4);
 					}
 					else
 					{
