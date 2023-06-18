@@ -5,7 +5,7 @@
 #include "window.h"
 #include "font.h"
 #include "utils.h"
-#include "LevelsList.h"
+#include "Menu.h"
 
 class DeleteLevelPrompt :
     public Prompt

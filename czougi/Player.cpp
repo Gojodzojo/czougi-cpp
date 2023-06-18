@@ -40,7 +40,7 @@ Texture* getEagleTexture(PlayerColor playerColor)
 	return redEagleTexture;
 }
 	
-Eagle::Eagle(PlayerColor playerColor) : graphics(*getEagleTexture(playerColor)), _isAlive(false)
+Eagle::Eagle(PlayerColor playerColor) : graphics(*getEagleTexture(playerColor))
 {
 	graphics.setScale(TEXTURE_SCALE);
 	_isAlive = 1;

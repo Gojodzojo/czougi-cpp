@@ -4,6 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 czougi/libraries/SFML
 czougi/fonts/Roboto-Regular.ttf
+czougi/fonts/OpenSans-ExtraBold.ttf
 # User-specific files
 *.rsuser
 *.suo

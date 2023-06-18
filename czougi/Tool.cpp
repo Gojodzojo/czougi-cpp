@@ -92,6 +92,7 @@ void TankTool::performAction(Vector2f& cursorPosition, Vector2f& selectionRectan
 		// Add a new player
 		Player player(playerColor);
 		player.graphics.setPosition(cursorPosition.x, cursorPosition.y);
+		player.eagle._isAlive = false;
 		level.players.push_back(player);
 	}
 }

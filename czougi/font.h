@@ -3,5 +3,6 @@
 #include <iostream>
 
 extern sf::Font robotoRegular;
+extern sf::Font sansExtraBold;
 
 void loadFonts();

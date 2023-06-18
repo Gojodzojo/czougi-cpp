@@ -6,7 +6,7 @@ using namespace std;
 const int TOOLBAR_WIDTH = VIEW_WIDTH - VIEW_HEIGHT;
 const int LINE_THICKNESS = 2;
 
-const Vector2f FILE_OPERATION_ICON_SIZE(40, 40);
+const Vector2f FILE_OPERATION_ICON_SIZE(45, 45);
 const float FILE_OPERATION_ICON_MARGIN = (TOOLBAR_WIDTH - FILE_OPERATION_ICON_SIZE.x * 3) / 4 ;
 const float FILE_OPERATION_ICON_POSITION_Y = VIEW_HEIGHT - 90;
 
@@ -20,9 +20,9 @@ Editor::Editor(Level level) :
 	level(level),
 	prompt(nullptr),
 	toolbarBackground(Vector2f(TOOLBAR_WIDTH, VIEW_HEIGHT)),
-	playIcon(FILE_OPERATION_ICON_SIZE),
-	saveIcon(FILE_OPERATION_ICON_SIZE),
-	deleteIcon(FILE_OPERATION_ICON_SIZE),
+	playIcon(*playIconTexture),
+	saveIcon(*saveIconTexture),
+	deleteIcon(*deleteIconTexture),
 	horizontalLine(Vector2f(VIEW_HEIGHT, LINE_THICKNESS)),
 	verticalLine(Vector2f(LINE_THICKNESS, VIEW_HEIGHT)),
 	tools {
@@ -43,6 +43,10 @@ Editor::Editor(Level level) :
 	activeToolIndex(0),
 	isSelecting(false)
 {
+	playIcon.setScale(TEXTURE_SCALE);
+	saveIcon.setScale(TEXTURE_SCALE);
+	deleteIcon.setScale(TEXTURE_SCALE);
+
 	for (int i = 0; i < sizeof(tools) / sizeof(unique_ptr<Tool>); i++)
 	{
 		tools[i]->setPosition(VIEW_HEIGHT + TOOL_ICON_MARGIN + (i % 3) * (TOOL_ICON_MARGIN + TOOL_ICON_SIZE), FIRST_ROW_TOOL_ICON_Y + (i / 3) * (TOOL_ICON_SIZE + TOOL_ICON_MARGIN));
@@ -57,10 +61,6 @@ Editor::Editor(Level level) :
 	centerTextOrigin(levelName);
 	levelName.setPosition(VIEW_HEIGHT + TOOLBAR_WIDTH / 2, 80);
 	levelName.setFillColor(Color::Black);
-
-	playIcon.setFillColor(Color::Green);
-	saveIcon.setFillColor(Color::Blue);
-	deleteIcon.setFillColor(Color::Black);
 
 	playIcon.setPosition(VIEW_HEIGHT + FILE_OPERATION_ICON_MARGIN, FILE_OPERATION_ICON_POSITION_Y);
 	saveIcon.setPosition(VIEW_HEIGHT + FILE_OPERATION_ICON_MARGIN * 2 + FILE_OPERATION_ICON_SIZE.x, FILE_OPERATION_ICON_POSITION_Y);
@@ -138,7 +138,7 @@ Scene* Editor::processEvent(sf::RenderWindow& window, sf::Event& event)
 		{
 			Vector2f mousePosition = window.mapPixelToCoords(Vector2i(event.mouseButton.x, event.mouseButton.y));
 
-			if (mousePosition.x > 0 && mousePosition.x < VIEW_HEIGHT && mousePosition.y > 0 && mousePosition.y < VIEW_HEIGHT)
+			if (mousePosition.x > 0 && mousePosition.x < VIEW_HEIGHT && mousePosition.y > 0 && mousePosition.y < VIEW_HEIGHT && (isSelecting == tools[activeToolIndex]->isSelectable))
 			{
 				Vector2f cursorPosition(((int)mousePosition.x / LEVEL_SIZE) * BLOCK_SIZE, ((int)mousePosition.y / LEVEL_SIZE) * BLOCK_SIZE);
 				Vector2f selectionRectanglePosition = selectionRectangle.getPosition();
@@ -151,7 +151,7 @@ Scene* Editor::processEvent(sf::RenderWindow& window, sf::Event& event)
 					if(level.canBeSaved())
 					{
 						level.save();
-						return new LevelsList;
+						return new Menu(4);
 					}
 					else
 					{

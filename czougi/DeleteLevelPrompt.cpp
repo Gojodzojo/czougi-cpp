@@ -56,7 +56,7 @@ pair<bool, Scene*> DeleteLevelPrompt::processEvent(sf::RenderWindow& window, sf:
 		else if (isHovered(okButtonText.getGlobalBounds(), mousePosition))
 		{
 			level.deleteLevel();
-			return make_pair(false, new LevelsList());
+			return make_pair(false, new Menu(4));
 		}
 	}
 
