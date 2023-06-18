@@ -92,7 +92,7 @@ void TankTool::performAction(Vector2f& cursorPosition, Vector2f& selectionRectan
 		// Add a new player
 		Player player(playerColor);
 		player.graphics.setPosition(cursorPosition.x, cursorPosition.y);
-		player.eagle._isAlive = false;
+		player.eagle.isAlive = false;
 		level.players.push_back(player);
 	}
 }
@@ -113,7 +113,7 @@ void EagleTool::performAction(Vector2f& cursorPosition, Vector2f& selectionRecta
 			if (player.playerColor == this->playerColor)
 			{
 				player.eagle.graphics.setPosition(cursorPosition.x, cursorPosition.y);
-				player.eagle._isAlive = true;
+				player.eagle.isAlive = true;
 				return;
 			}
 		}
@@ -277,7 +277,7 @@ void EraserTool::performAction(Vector2f& cursorPosition, Vector2f& selectionRect
 					x == eaglePosition.x && y == eaglePosition.y + BLOCK_SIZE ||
 					x == eaglePosition.x + BLOCK_SIZE && y == eaglePosition.y + BLOCK_SIZE)
 				{
-					level.players[i].eagle._isAlive = false;
+					level.players[i].eagle.isAlive = false;
 					goto cnt;
 				}
 			}

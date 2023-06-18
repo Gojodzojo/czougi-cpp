@@ -23,8 +23,8 @@ public:
 	Eagle(PlayerColor);
 	sf::Sprite graphics;
 	void draw(sf::RenderWindow&);
-	bool _isAlive;
-	bool _hasCollision;
+	bool isAlive;
+	bool hasCollision;
 	
 };
 
@@ -32,16 +32,15 @@ class Player
 {
 public:
 	Player(PlayerColor, sf::Vector2f startPos = sf::Vector2f(0, 0));
-	sf::Vector2f _startPos;
-	Keybindings movemenet;
+	sf::Vector2f startPos;
 	sf::Sprite graphics;
 	Eagle eagle;
 	PlayerColor playerColor;
 
 	void draw(sf::RenderWindow&);
-	float _timeSinceDeath;
-	bool _hasCollision;
-	bool _isAlive;
+	float timeSinceDeath;
+	bool hasCollision;
+	bool isAlive;
 	int numberOfDeaths;
 };
 

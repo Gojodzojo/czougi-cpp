@@ -262,7 +262,7 @@ void Editor::draw(sf::RenderWindow& window)
 	{
 		player.draw(window);
 
-		if (player.eagle._isAlive)
+		if (player.eagle.isAlive)
 		{
 			player.eagle.draw(window);
 		}

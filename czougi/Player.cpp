@@ -17,10 +17,10 @@ Player::Player(PlayerColor playerColor, Vector2f startPos) :
 {
 	graphics.setScale(TEXTURE_SCALE);
 	graphics.setOrigin(512, 512);
-	_startPos = startPos;
-	_timeSinceDeath = 3.5;
-	_hasCollision = 1;
-	_isAlive = 1;
+	startPos = startPos;
+	timeSinceDeath = 3.5;
+	hasCollision = 1;
+	isAlive = 1;
 	int numberOfDeaths = 0;
 
 }
@@ -43,8 +43,8 @@ Texture* getEagleTexture(PlayerColor playerColor)
 Eagle::Eagle(PlayerColor playerColor) : graphics(*getEagleTexture(playerColor))
 {
 	graphics.setScale(TEXTURE_SCALE);
-	_isAlive = 1;
-	_hasCollision = 1;
+	isAlive = 1;
+	hasCollision = 1;
 }
 
 void Eagle::draw(RenderWindow& window)
