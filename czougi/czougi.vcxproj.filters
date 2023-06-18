@@ -201,5 +201,8 @@
     <Image Include="images\save-icon.png">
       <Filter>Pliki zasobów</Filter>
     </Image>
+    <Image Include="images\go-back-icon.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
   </ItemGroup>
 </Project>

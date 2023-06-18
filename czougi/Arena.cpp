@@ -28,8 +28,14 @@ bool bulletsColliding(const RectangleShape& bullet, const Vector2f& blockPositio
 	return bounds1.intersects(bounds2);  //true jak sie nakladaja
  }
 
-Arena::Arena(Level gameLevel) : level(gameLevel),
-ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT)), iconPlayer1(*yellowTankTexture), iconPlayer2(*blueTankTexture), iconPlayer3(*greenTankTexture), iconPlayer4(*redTankTexture)
+Arena::Arena(Level gameLevel) : 
+	level(gameLevel),
+	ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT)),
+	iconPlayer1(*yellowTankTexture),
+	iconPlayer2(*blueTankTexture),
+	iconPlayer3(*greenTankTexture),
+	iconPlayer4(*redTankTexture),
+	goBackIcon(*goBackIconTexture)
 {
 	ingameStats.setOutlineColor(Color::White);
 	ingameStats.setPosition(VIEW_WIDTH - INGAMESTATS_WIDTH, 0);
@@ -46,11 +52,9 @@ ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT)), iconPlayer1(*yellowTankTe
 	winnerText.setFillColor(Color::White);
 	winnerText.setCharacterSize(120);
 
-
-
+	goBackIcon.setScale(TEXTURE_SCALE);
+	goBackIcon.setPosition((VIEW_HEIGHT + (INGAMESTATS_WIDTH / 2) - 22.5), 750);
 	
-
-
 	backToMenu.setFont(robotoRegular);
 	backToMenu.setFillColor(Color::White);
 	backToMenu.setCharacterSize(50);
@@ -130,6 +134,15 @@ ingameStats(Vector2f(INGAMESTATS_WIDTH, VIEW_HEIGHT)), iconPlayer1(*yellowTankTe
 
 Scene* Arena::processEvent(sf::RenderWindow& window, sf::Event& event)
 {
+	if(event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left)
+	{
+		Vector2f mousePosition = window.mapPixelToCoords(Vector2i(event.mouseButton.x, event.mouseButton.y));
+
+		if (isHovered(goBackIcon.getGlobalBounds(), mousePosition))
+		{
+			return new Menu(4);
+		}
+	}
 
 	for (int i = 0; i < level.players.size(); i++)
 	{
@@ -150,8 +163,6 @@ Scene* Arena::processEvent(sf::RenderWindow& window, sf::Event& event)
 
 Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 {
-	deltaTime = clock.getElapsedTime().asSeconds();
-	clock.restart();
 	float velocity = 150 * deltaTime;
 	for (int i = 0; i < level.players.size(); i++)
 	{
@@ -535,7 +546,7 @@ Scene* Arena::doCalculations(sf::RenderWindow& window, float deltaTime)
 			winnerText.setFillColor(playersTextColors[level.players[i].playerColor]);
 			if (Keyboard::isKeyPressed(Keyboard::Escape))
 			{
-				return new Menu;
+				return new Menu(4);
 			}
 		}
 
@@ -639,4 +650,6 @@ void Arena::draw(sf::RenderWindow& window)
 		window.draw(winnerText);
 		window.draw(backToMenu);
 	}
+
+	window.draw(goBackIcon);
 }

@@ -40,6 +40,7 @@ private:
 	sf::Sprite iconPlayer4;
 	sf::Texture* playersColors[4] = { yellowTankTexture,blueTankTexture,greenTankTexture, redTankTexture };
 	sf::Color playersTextColors[4] = { sf::Color::Yellow, sf::Color::Blue, sf::Color::Green, sf::Color::Red };
+	sf::Sprite goBackIcon;
 
 
 	

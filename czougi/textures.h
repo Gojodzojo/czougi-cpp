@@ -27,6 +27,7 @@ extern sf::Texture* eraserTexture;
 extern sf::Texture* playIconTexture;
 extern sf::Texture* saveIconTexture;
 extern sf::Texture* deleteIconTexture;
+extern sf::Texture* goBackIconTexture;
 
 extern sf::Texture* tlo;
 extern sf::Texture* Tytol;

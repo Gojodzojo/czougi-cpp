@@ -196,6 +196,7 @@
     <Image Include="images\concrete-wall.png" />
     <Image Include="images\delete-icon.png" />
     <Image Include="images\eraser.png" />
+    <Image Include="images\go-back-icon.png" />
     <Image Include="images\green-eagle.png" />
     <Image Include="images\green-tank.png" />
     <Image Include="images\leaves.png" />
