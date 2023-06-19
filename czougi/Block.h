@@ -3,6 +3,7 @@
 #include "textures.h"
 
 extern const int BLOCK_SIZE;
+const sf::Vector2f BLOCK_SIZE_VEC(BLOCK_SIZE, BLOCK_SIZE);
 
 class Block
 {

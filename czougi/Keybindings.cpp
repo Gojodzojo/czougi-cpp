@@ -15,6 +15,14 @@ Keybindings::Keybindings(sf::Keyboard::Key up, sf::Keyboard::Key down, sf::Keybo
 {
 }
 
+Keybindings::Keybindings()
+{
+	Keybindings::up = sf::Keyboard::W;
+	Keybindings::down = sf::Keyboard::S;
+	Keybindings::left = sf::Keyboard::A;
+	Keybindings::right = sf::Keyboard::D;
+	Keybindings::shot = sf::Keyboard::E;
+}
 string getGameConfigPath();
 
 void saveKeybindings()

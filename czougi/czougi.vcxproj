@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="Arena.cpp" />
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="DeleteLevelPrompt.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="font.cpp" />
@@ -165,6 +166,7 @@
   <ItemGroup>
     <ClInclude Include="Arena.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="DeleteLevelPrompt.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="font.h" />
@@ -194,6 +196,7 @@
     <Image Include="images\concrete-wall.png" />
     <Image Include="images\delete-icon.png" />
     <Image Include="images\eraser.png" />
+    <Image Include="images\go-back-icon.png" />
     <Image Include="images\green-eagle.png" />
     <Image Include="images\green-tank.png" />
     <Image Include="images\leaves.png" />

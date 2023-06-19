@@ -10,7 +10,7 @@ public:
 	sf::Keyboard::Key left;
 	sf::Keyboard::Key right;
 	sf::Keyboard::Key shot;
-
+	Keybindings();
 	Keybindings(sf::Keyboard::Key up, sf::Keyboard::Key down, sf::Keyboard::Key left, sf::Keyboard::Key right, sf::Keyboard::Key shot);
 };
 

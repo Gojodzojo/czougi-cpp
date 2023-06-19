@@ -51,6 +51,9 @@
     <ClCompile Include="Block.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
     <ClCompile Include="textures.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
@@ -102,6 +105,9 @@
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="Block.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="textures.h">
@@ -193,6 +199,9 @@
       <Filter>Pliki zasobów</Filter>
     </Image>
     <Image Include="images\save-icon.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="images\go-back-icon.png">
       <Filter>Pliki zasobów</Filter>
     </Image>
   </ItemGroup>

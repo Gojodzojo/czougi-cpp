@@ -23,6 +23,7 @@ Texture* eraserTexture;
 Texture* playIconTexture;
 Texture* saveIconTexture;
 Texture* deleteIconTexture;
+Texture* goBackIconTexture;
 
 Texture* tlo;
 Texture* Tytol;
@@ -52,6 +53,7 @@ void loadTextures()
 	playIconTexture = loadTexture("play-icon.png");
 	saveIconTexture = loadTexture("save-icon.png");
 	deleteIconTexture = loadTexture("delete-icon.png");
+	goBackIconTexture = loadTexture("go-back-icon.png");
 
 	tlo = loadTexture("t³o.jpg");
 	Tytol = loadTexture("tytol.png");

@@ -88,7 +88,7 @@ bool Level::canBeSaved()
 
 	for (Player& player : players)
 	{
-		if (!player.eagle.isPresent)
+		if (!player.eagle.isAlive)
 		{
 			return false;
 		}
@@ -124,7 +124,7 @@ Level::Level(const string& levelName) : name(levelName)
 
 		player.graphics.setPosition(playerPosition);
 		player.eagle.graphics.setPosition(eaglePosition);
-		player.eagle.isPresent = true;
+		player.eagle.isAlive = true;
 		players.push_back(player);
 	}
 
@@ -281,7 +281,7 @@ bool Level::isTileAvaliable(float x, float y)
 			return false;
 
 		Vector2f eaglePosition = player.eagle.graphics.getPosition();
-		if (player.eagle.isPresent && (x == eaglePosition.x && y == eaglePosition.y ||
+		if (player.eagle.isAlive && (x == eaglePosition.x && y == eaglePosition.y ||
 			x == eaglePosition.x + BLOCK_SIZE && y == eaglePosition.y ||
 			x == eaglePosition.x && y == eaglePosition.y + BLOCK_SIZE ||
 			x == eaglePosition.x + BLOCK_SIZE && y == eaglePosition.y + BLOCK_SIZE))
